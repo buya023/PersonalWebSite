@@ -267,6 +267,19 @@ header {
 }
 
 
+/* My projects */
+
+.projectPic {
+    height: 12em;
+    padding: 20px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border: 5px solid var(--clr-accent);
+    margin-top: 20px;
+}
+
+
 /* My services section */
 
 .my-services {
@@ -308,7 +321,7 @@ header {
     .services {
         display: flex;
         max-width: 1300px;
-        margin: 4em auto
+        margin: 4em auto;
     }
     .service+.service {
         margin-left: 3em;
@@ -340,6 +353,9 @@ header {
 .btn:hover {
     transform: scale(1.1);
 }
+
+
+/* My online course */
 
 
 /* about me */
