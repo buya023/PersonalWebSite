@@ -357,6 +357,27 @@ header {
 
 /* My online course */
 
+.onlineClass {
+    background-color: var(--clr-light);
+    background-image: url(../img/services-bg.jpg);
+    background-size: cover;
+    background-blend-mode: multiply;
+    color: var(--clr-dark);
+    text-align: center;
+}
+
+.course__title--services::after {
+    content: '';
+    /* to make the under line */
+    display: block;
+    width: 2em;
+    height: 1px;
+    margin: 0.5em auto 1em;
+    background: var(--clr-dark);
+    opacity: 0.25;
+    /* make ut blurry */
+}
+
 
 /* about me */
 
