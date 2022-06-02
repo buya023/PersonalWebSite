@@ -5,6 +5,45 @@
 }
 
 
+/* animation */
+
+ani {
+    width: 20px;
+    height: 20px;
+    background-color: red;
+    position: relative;
+    animation: myfirst 5s linear 2s infinite alternate;
+}
+
+@keyframes myfirst {
+    0% {
+        background-color: red;
+        left: 0px;
+        top: 0px;
+    }
+    25% {
+        background-color: yellow;
+        left: 600px;
+        top: 0px;
+    }
+    50% {
+        background-color: var(--clr-accent);
+        left: 500px;
+        top: 10px;
+    }
+    75% {
+        background-color: var(--clr-accent);
+        left: 0px;
+        top: 10px;
+    }
+    100% {
+        background-color: black;
+        left: 0px;
+        top: 0px;
+    }
+}
+
+
 /* Custom Properties */
 
 :root {
