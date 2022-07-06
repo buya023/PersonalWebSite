@@ -290,7 +290,7 @@ header {
     }
     .intro__img {
         grid-area: img;
-        min-width: 250px;
+        min-width: 200px;
         position: relative;
         z-index: 2;
     }
@@ -316,6 +316,11 @@ header {
     margin-right: auto;
     border: 5px solid var(--clr-accent);
     margin-top: 20px;
+}
+
+#flappyName {
+    text-decoration: none;
+    color: white;
 }
 
 
