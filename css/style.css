@@ -157,7 +157,31 @@ h3 {
 
 /* header */
 
-header {
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    /* border-bottom: 1px solid #e7e7e7; */
+    background-color: #fff;
+    display: flex;
+    justify-content: center;
+}
+
+li a {
+    display: block;
+    color: black;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li a:hover {
+    color: var(--clr-accent);
+}
+
+
+/* header {
     display: flex;
     justify-content: space-between;
     padding: 1em;
@@ -263,6 +287,7 @@ header {
 .hamburger::after {
     bottom: 6px;
 }
+ */
 
 
 /*  Intro section  */
@@ -359,7 +384,7 @@ header {
 .service {
     max-width: 500px;
     margin: 0 auto;
-    width: 33%;
+    /* width: 33%; */
 }
 
 @media (min-width: 800px) {
@@ -530,6 +555,7 @@ header {
     justify-content: center;
     margin: 2em 0 0;
     padding: 0;
+    background-color: #111;
 }
 
 .social-list__item {
@@ -553,4 +579,51 @@ header {
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
+}
+
+#slideshow {
+    text-align: center;
+    overflow: hidden;
+    height: 430px;
+    width: 728px;
+    margin: 0 auto;
+}
+
+.slide-wrapper {
+    width: 2912px;
+    -webkit-animation: slide 18s ease infinite;
+}
+
+.slide {
+    float: left;
+    height: 510px;
+    width: 728px;
+}
+
+.slide:nth-child(1) {
+    background: grey;
+}
+
+@-webkit-keyframes slide {
+    20% {
+        margin-left: 0px;
+    }
+    30% {
+        margin-left: -728px;
+    }
+    50% {
+        margin-left: -728px;
+    }
+    60% {
+        margin-left: -1456px;
+    }
+    70% {
+        margin-left: -1456px;
+    }
+    80% {
+        margin-left: -2184px;
+    }
+    90% {
+        margin-left: -2184px;
+    }
 }
