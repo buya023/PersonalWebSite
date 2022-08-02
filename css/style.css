@@ -15,6 +15,13 @@ ani {
     animation: myfirst 5s linear 2s infinite alternate;
 }
 
+/* The sticky class is added to the navbar with JS when it reaches its scroll position */
+.sticky {
+    position: fixed;
+    top: 0;
+    width: 100%;
+  }
+  
 @keyframes myfirst {
     0% {
         background-color: red;
@@ -292,10 +299,6 @@ li a:hover {
 
 /*  Intro section  */
 
-.intro {
-    position: relative;
-}
-
 .intro__img {
     box-shadow: var(--bs);
 }
@@ -362,7 +365,6 @@ li a:hover {
 
 .section__title--services {
     color: var(--clr-accent);
-    position: relative;
 }
 
 .section__title--services::after {
