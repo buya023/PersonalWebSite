@@ -164,7 +164,7 @@ h3 {
 
 /* header */
 
-ul {
+.mainMenu {
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -175,7 +175,7 @@ ul {
     justify-content: center;
 }
 
-li a {
+.mainMenuList a {
     display: block;
     color: black;
     text-align: center;
@@ -183,7 +183,7 @@ li a {
     text-decoration: none;
 }
 
-li a:hover {
+.mainMenuList a:hover {
     color: var(--clr-accent);
 }
 
