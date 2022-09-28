@@ -15,13 +15,15 @@ ani {
     animation: myfirst 5s linear 2s infinite alternate;
 }
 
+
 /* The sticky class is added to the navbar with JS when it reaches its scroll position */
+
 .sticky {
     position: fixed;
     top: 0;
     width: 100%;
-  }
-  
+}
+
 @keyframes myfirst {
     0% {
         background-color: red;
@@ -164,7 +166,7 @@ h3 {
 
 /* header */
 
-ul {
+#mainMenu {
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -175,7 +177,7 @@ ul {
     justify-content: center;
 }
 
-li a {
+.mainMenuList a {
     display: block;
     color: black;
     text-align: center;
@@ -183,7 +185,7 @@ li a {
     text-decoration: none;
 }
 
-li a:hover {
+.mainMenuList a:hover {
     color: var(--clr-accent);
 }
 
@@ -346,7 +348,7 @@ li a:hover {
     margin-top: 20px;
 }
 
-#flappyName {
+.gameName {
     text-decoration: none;
     color: white;
 }
@@ -386,7 +388,7 @@ li a:hover {
 .service {
     max-width: 500px;
     margin: 0 auto;
-    /* width: 33%; */
+    width: 33%;
 }
 
 @media (min-width: 800px) {
@@ -489,40 +491,6 @@ li a:hover {
 }
 
 
-/* My Work */
-
-.my-work {
-    background-color: var(--clr-dark);
-    color: var(--clr-light);
-    text-align: center;
-}
-
-.portfolio {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-}
-
-.portfolio__item {
-    background: var(--clr-accent);
-    overflow: hidden;
-}
-
-.portfolio__img {
-    transition: transform 750ms cubic-bezier(.5, 0, .5, 1), opacity 250ms linear;
-}
-
-.portfolio__item:focus {
-    position: relative;
-    z-index: 2;
-}
-
-.portfolio__img:hover,
-.portfolio__item:focus .portfolio__img {
-    transform: scale(1.2);
-    opacity: .5;
-}
-
-
 /* footer */
 
 .footer {
@@ -581,51 +549,4 @@ li a:hover {
     max-width: 600px;
     margin-left: auto;
     margin-right: auto;
-}
-
-#slideshow {
-    text-align: center;
-    overflow: hidden;
-    height: 430px;
-    width: 728px;
-    margin: 0 auto;
-}
-
-.slide-wrapper {
-    width: 2912px;
-    -webkit-animation: slide 18s ease infinite;
-}
-
-.slide {
-    float: left;
-    height: 510px;
-    width: 728px;
-}
-
-.slide:nth-child(1) {
-    background: grey;
-}
-
-@-webkit-keyframes slide {
-    20% {
-        margin-left: 0px;
-    }
-    30% {
-        margin-left: -728px;
-    }
-    50% {
-        margin-left: -728px;
-    }
-    60% {
-        margin-left: -1456px;
-    }
-    70% {
-        margin-left: -1456px;
-    }
-    80% {
-        margin-left: -2184px;
-    }
-    90% {
-        margin-left: -2184px;
-    }
 }
