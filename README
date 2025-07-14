@@ -1,0 +1,57 @@
+
+This is a personal portfolio website for Buya, a software engineer. The site showcases projects, online courses, coding competition profiles, a blog, and a custom-built 2D Fish Game. It is built using HTML, CSS, and JavaScript, and is designed to be simple, informative, and easy to navigate.
+
+## Features
+
+### 1. Home & Navigation
+- Sticky navigation bar for easy access to all sections: Home, Projects, Online Class, Competition, About Me, and Blog.
+
+### 2. Projects
+- **Flappy Bird**: A Python (PyGame) implementation of the classic game.
+- **Drum Kit**: An interactive drum kit playable with keyboard keys (HTML/CSS/JS).
+- **Dice Game**: A simple dice game using HTML and CSS.
+- **2D Fish Game**: A browser-based canvas game where you control a fish to pop bubbles for points. (See `game/` directory)
+
+### 3. Online Courses
+- Web development (Udemy)
+- Python programming (MeLearn.mn)
+- Data structures and algorithms (Udemy)
+
+### 4. Coding Competitions
+- Links to Buya's profiles on [AtCoder](https://atcoder.jp/users/Buya), [LeetCode](https://leetcode.com/Buyanjargal/), and [Codeforces](https://codeforces.com/profile/buya4).
+
+### 5. Blog
+- Personal blog section with posts about coding, school, and social issues. Example post: "What is the biggest problem in UB?" discussing air pollution and mining in Ulaanbaatar, Mongolia.
+
+### 6. About Me
+- Buya's background, self-learning journey, and motivation for pursuing software engineering.
+
+### 7. Contact & Social
+- Email link and social icons for LeetCode, LinkedIn, and GitHub.
+
+## How to Run/View
+
+1. **Clone or Download** this repository.
+2. Open `index.html` in your web browser to view the main site.
+3. Navigate to the `game/` directory and open `game.html` to play the 2D Fish Game.
+4. Visit `blogs/blogs.html` for the blog section.
+
+No build steps or server setup are required; the site is fully static.
+
+## Directory Structure
+
+- `index.html` - Main landing page
+- `css/` - Main stylesheets
+- `js/` - JavaScript for navigation
+- `img/` - Images and icons
+- `blogs/` - Blog section and posts
+- `game/` - 2D Fish Game (HTML, JS, images)
+
+## Credits
+- Built by Buya Tserendendev
+- Game and project images are original or from open sources
+- Inspired by online courses and coding challenges
+
+---
+
+Feel free to explore, play the games, and read the blog posts!
