@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buya's Portfolio</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" integrity="sha256-46qynGAkLSFpVbEBog43gvNhfrOj+BmwXdxFgVK/Kvc=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"
+        integrity="sha256-46qynGAkLSFpVbEBog43gvNhfrOj+BmwXdxFgVK/Kvc=" crossorigin="anonymous" />
     <link href="https://fonts.googleapis.com/css?family=Lora:400,700|Roboto+Slab:400,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../css/style.css">
     <link rel="stylesheet" href="../blogs.css">
@@ -24,19 +25,88 @@
     </ul>
 
     <div class="container">
-        <div class="blog_section">
-            <h3>What is the biggest problem in UB ?</h3>
+        <div class="blog_section blog-post">
+            <div class="blog-post-header">
+                <img src="../../img/myAvatar1.png" alt="Author avatar" class="blog-avatar">
+                <div>
+                    <h1 class="blog-title">Essential MySQL: What Every Beginner Should Know</h1>
+                    <div class="blog-meta">By Buya &bull; <span>July 2025</span></div>
+                </div>
+            </div>
+            <span class="blog-badge">MySQL Basics</span>
             <p>
-                Ulaanbaatar is the capital of Mongolia and has almost half of its population. Over the last few years, there has been rapid development of either the environment or problems. I will try to explain the problem of UB more clearly. First of all, the issue
-                of headache in Mongolia and globally is air pollution that shadows human development. UB is the world's second-largest emitter of smoke and four times its normal size. For example, I heard that my sister was born in UB a week ago. Since
-                hearing the news, I was very happy with my wish to be my younger sister. But my younger sister is not normal therefore I went to the hospital with my sister, and the doctor told me that air pollution was affecting my sister, therefore
-                my sister should be in the countryside with fresh air. When I heard it, I was shocked. In addition, Air pollution harmful affects the health of the population and increases the incidence of respiratory cardiovascular, allergic disease,
-                genetic disorder, congenital malformation and cancers, and incidence of childhood immunodeficiency and growth. the findings of scientists and researchers have shown. I am sad because air pollution is threatening Mongolia's future. The
-                Second big problem is mining. Despite desertification only in the southern part of Mongolia, it has been increasing rapidly due to mining in recent years. In other words, more than seventy-five percent of the country's territory is affected
-                by desertification. Mining can have harmful effects on the surroundings, groundwater, and people. The result can be an unnaturally high concentration of some chemicals, such as mercury. Mercury is easily soluble in water and is easily
-                absorbed into the human body, and is the main cause of cancer. Therefore artisanal gold miners are injured by their health, and their children are affected by genes . It is very dangerous. In conclusion, the most important issues in Mongolia
-                are air pollution and mining. The health issues of Mongolian people are of comparable value. It is important for every Mongolian to enter into solving problems.
-
+                I started learning <strong>MySQL</strong> — a tool to store and manage
+                data. Here are the basics I picked up:
+            </p>
+            <hr class="blog-divider">
+            <h4>🧹 1. DISTINCT – Removing Duplicates</h4>
+            <p>Removes repeated values in your result.</p>
+            <pre><code>SELECT DISTINCT country FROM customers;</code></pre>
+            <hr class="blog-divider">
+            <h4>📑 2. ORDER BY, LIMIT, and OFFSET – Sorting and Limiting Results</h4>
+            <p><strong>ORDER BY</strong> sorts data:</p>
+            <pre><code>SELECT * FROM products ORDER BY price ASC;</code></pre>
+            <p><strong>LIMIT</strong> and <strong>OFFSET</strong> control how many rows to show and where to start:</p>
+            <pre><code>SELECT * FROM products
+        ORDER BY price DESC
+        LIMIT 5 OFFSET 10;</code></pre>
+            <hr class="blog-divider">
+            <h4>🔗 3. JOINs – Combining Tables</h4>
+            <p><strong>INNER JOIN</strong> returns only matching rows from both tables.</p>
+            <pre><code>SELECT orders.id, customers.name
+        FROM orders
+        INNER JOIN customers ON orders.customer_id = customers.id;</code></pre>
+            <ul>
+                <li><strong>LEFT JOIN</strong> – All from left table, even if no match</li>
+                <li><strong>RIGHT JOIN</strong> – All from right table, even if no match</li>
+                <li><strong>FULL JOIN</strong> – Not directly supported, but can be simulated</li>
+            </ul>
+            <hr class="blog-divider">
+            <h4>📊 4. Aggregate Functions – Doing Math with Data</h4>
+            <ul>
+                <li><code>COUNT()</code> – number of rows</li>
+                <li><code>SUM()</code> – total</li>
+                <li><code>AVG()</code> – average</li>
+                <li><code>MIN()</code> / <code>MAX()</code> – smallest/largest</li>
+            </ul>
+            <pre><code>SELECT COUNT(*) FROM users;</code></pre>
+            <hr class="blog-divider">
+            <h4>🧱 5. GROUP BY – Organizing Data</h4>
+            <pre><code>SELECT department, COUNT(*)
+        FROM employees
+        GROUP BY department;</code></pre>
+            <hr class="blog-divider">
+            <h4>🔍 6. HAVING – Filtering Grouped Data</h4>
+            <pre><code>SELECT department, COUNT(*)
+        FROM employees
+        GROUP BY department
+        HAVING COUNT(*) > 5;</code></pre>
+            <hr class="blog-divider">
+            <h4>✨ 7. Other Useful Keywords</h4>
+            <ul>
+                <li><strong>ABS()</strong>: Returns absolute value — <code>SELECT ABS(-25);</code></li>
+                <li><strong>AS</strong>: Rename column — <code>SELECT price * 1.1 AS new_price FROM products;</code>
+                </li>
+                <li><strong>NULL</strong>: Represents missing/empty value —
+                    <code>SELECT * FROM users WHERE email IS NULL;</code>
+                </li>
+            </ul>
+            <hr class="blog-divider">
+            <h4>🛠️ 8. Changing Data</h4>
+            <p><strong>UPDATE</strong> – change existing data:</p>
+            <pre><code>UPDATE users
+        SET name = 'Alex'
+        WHERE id = 1;</code></pre>
+            <p><strong>DELETE</strong> – remove rows:</p>
+            <pre><code>DELETE FROM users WHERE id = 2;</code></pre>
+            <p><strong>DROP</strong> – delete entire table:</p>
+            <pre><code>DROP TABLE old_data;</code></pre>
+            <p><strong>ALTER</strong> – modify table structure:</p>
+            <pre><code>ALTER TABLE users
+        ADD COLUMN age INT;</code></pre>
+            <hr class="blog-divider">
+            <p>
+                I'll continue learning and sharing what I discover along the way!
             </p>
         </div>
     </div>
