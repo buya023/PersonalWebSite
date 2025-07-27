@@ -74,6 +74,7 @@ body {
   flex-direction: column;
   align-items: flex-start;
   transition: transform 0.2s, box-shadow 0.2s;
+  position: relative;
 }
 
 .blog-card:hover {
@@ -98,6 +99,9 @@ body {
   text-decoration: none;
   font-weight: bold;
   transition: color 0.2s;
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
 }
 
 .read-more:hover {
@@ -208,6 +212,19 @@ body {
   color: #1a4d4f;
   background: none;
   font-size: 1em;
+}
+
+/* Table styling for blog posts */
+.blog-post table {
+  border-collapse: separate;
+  border-spacing: 8px;
+  width: 100%;
+  margin: 1rem 0;
+}
+
+.blog-post table th,
+.blog-post table td {
+  background: #fff;
 }
 
 @media (max-width: 900px) {

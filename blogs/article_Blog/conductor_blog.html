@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buya's Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"
+        integrity="sha256-46qynGAkLSFpVbEBog43gvNhfrOj+BmwXdxFgVK/Kvc=" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,700|Roboto+Slab:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../blogs.css">
+    <script src="https://code.iconify.design/2/2.2.1/iconify.min.js"></script>
+</head>
+
+<body>
+    <ul class="sticky" id="mainMenu">
+        <li class="mainMenuList"><a href="../../index.html">Home</a></li>
+        <li class="mainMenuList"><a href="../../index.html#project">Project</a></li>
+        <li class="mainMenuList"><a href="../../index.html#class">Online class</a></li>
+        <li class="mainMenuList"><a href="../../index.html#competition">Competition</a></li>
+        <li class="mainMenuList"><a href="../../index.html#about">About me</a></li>
+        <li class="mainMenuList"><a href="../blogs.html">Blog</a></li>
+    </ul>
+
+    <div class="container">
+        <div class="blog_section blog-post">
+            <div class="blog-post-header">
+                <img src="../../img/myAvatar1.png" alt="Author avatar" class="blog-avatar">
+                <div>
+                    <h1 class="blog-title">Getting Started with Netflix Conductor</h1>
+                    <div class="blog-meta">By Buya &bull; <span>July 2025</span></div>
+                </div>
+            </div>
+            <span class="blog-badge">Workflow Orchestration</span>
+
+            <p>I recently worked with <strong>Netflix Conductor</strong>, a powerful workflow orchestration engine.
+                Here's what I learned, how it works, and how you can run your first workflow.</p>
+            <hr class="blog-divider">
+
+            <h4>🔧 How It Works</h4>
+            <ol>
+                <li>Define a <strong>workflow</strong> with a list of tasks.</li>
+                <li>Write <strong>workers</strong> that know how to do the tasks.</li>
+                <li>Conductor <strong>assigns</strong> tasks to workers.</li>
+                <li>Workers <strong>run the task</strong> and return status/results.</li>
+                <li>Conductor <strong>tracks progress</strong> and moves to the next step.</li>
+            </ol>
+            <hr class="blog-divider">
+
+            <h4>📘 Key Concepts</h4>
+            <table>
+                <tr>
+                    <th>Concept</th>
+                    <th>Simple Explanation</th>
+                </tr>
+                <tr>
+                    <td>Workflow</td>
+                    <td>Sequence of steps, like a recipe.</td>
+                </tr>
+                <tr>
+                    <td>Task</td>
+                    <td>A single action in a workflow.</td>
+                </tr>
+                <tr>
+                    <td>Worker</td>
+                    <td>Program that performs a task.</td>
+                </tr>
+                <tr>
+                    <td>Input Data</td>
+                    <td>Data passed into a task.</td>
+                </tr>
+                <tr>
+                    <td>Output Data</td>
+                    <td>Result after a task runs.</td>
+                </tr>
+                <tr>
+                    <td>Task Status</td>
+                    <td>Result: COMPLETED, FAILED, etc.</td>
+                </tr>
+                <tr>
+                    <td>HTTP Task</td>
+                    <td>Built-in task to make HTTP requests.</td>
+                </tr>
+                <tr>
+                    <td>Decision Task</td>
+                    <td>Conditional logic (if-else).</td>
+                </tr>
+                <tr>
+                    <td>Sub-workflow</td>
+                    <td>Reusable workflow within another.</td>
+                </tr>
+            </table>
+            <hr class="blog-divider">
+
+            <h4>🧪 Step-by-Step: Your First Workflow</h4>
+            <p><strong>1. Define a workflow (JSON)</strong></p>
+            <pre><code>{
+    "name": "loan_check_test_workflow",
+    "tasks": [
+        {
+            "name": "loan_check_overdue",
+            "taskReferenceName": "loan_check_overdue",
+            "type": "SIMPLE"
+        }
+    ],
+    "schemaVersion": 2
+}</code></pre>
+
+            <p><strong>2. Start Conductor with Docker</strong></p>
+            <pre><code>git clone https://github.com/Netflix/conductor
+cd conductor/docker
+docker-compose up</code></pre>
+
+            <p><strong>3. Access UI:</strong> http://localhost:5000</p>
+            <p><strong>4. Register Workflow</strong> in the UI or via API.</p>
+            <p><strong>5. Create Worker</strong> to handle the task and return result.</p>
+
+            <hr class="blog-divider">
+            <p>I'll keep exploring advanced features like sub-workflows and decisions. Let me know if you'd like a
+                walkthrough on anything above!</p>
+        </div>
+    </div>
+</body>
+
+</html>
