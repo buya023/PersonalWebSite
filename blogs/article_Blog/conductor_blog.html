@@ -113,11 +113,76 @@
 cd conductor/docker
 docker-compose up</code></pre>
 
-            <p><strong>3. Access UI:</strong> http://localhost:5000</p>
-            <p><strong>4. Register Workflow</strong> in the UI or via API.</p>
-            <p><strong>5. Create Worker</strong> to handle the task and return result.</p>
+<h4>👨‍💻 Step 3: Build the Worker in Go</h4>
+<p>We'll use the <a href="https://github.com/conductor-sdk/conductor-go" target="_blank">Conductor Go SDK</a> to build a simple task worker. Install it</p>
 
-            <hr class="blog-divider">
+<p><strong>✏️ Create <code>main.go</code></strong></p>
+<pre><code>package main
+
+import (
+    "log"
+    "time"
+    "fmt"
+
+    "github.com/conductor-sdk/conductor-go/sdk/client"
+    "github.com/conductor-sdk/conductor-go/sdk/settings"
+    "github.com/conductor-sdk/conductor-go/sdk/worker"
+)
+
+func loanCheckOverdue(input map[string]interface{}) (map[string]interface{}, error) {
+    loanID, ok := input["loanId"].(string)
+    if !ok || loanID == "" {
+        loanID = "unknown"
+    }
+
+    log.Printf("🔍 Checking overdue status for loan: %s", loanID)
+
+    isOverdue := loanID == "1234" // example Id
+    result := map[string]interface{}{
+        "loanId": loanID,
+        "isOverdue": isOverdue,
+    }
+
+    log.Println("✅ Task result:", result)
+    return result, nil
+}
+
+func main() {
+    log.Println("🚀 Starting Conductor Go Worker...")
+
+    apiClient := client.NewAPIClient(
+        settings.NewAuthenticationSettings("", ""),
+        settings.NewHttpSettings("http://localhost:8080/api"),
+    )
+
+    taskRunner := worker.NewTaskRunnerWithApiClient(apiClient)
+    taskRunner.StartWorker("loan_check_overdue", loanCheckOverdue, 1, 1*time.Second)
+
+    log.Println("📡 Worker is polling for tasks...")
+    taskRunner.WaitWorkers()
+}</code></pre>
+
+<h4>🧪 Step 4: Run the Worker</h4>
+<pre><code>go run main.go</code></pre>
+
+<h4>✅ Output Example</h4>
+<pre><code>🚀 Starting Conductor Go Worker...
+🔍 Checking overdue status for loan: 1234
+✅ Task result: map[loanId:1234 isOverdue:true]</code></pre>
+
+<h4>🧪 Step 5: Trigger the Workflow</h4>
+<p>Start the workflow execution with a simple <code>curl</code> command:</p>
+<pre><code>curl -X POST http://localhost:8080/api/workflow/loan_check_test_workflow \
+     -H "Content-Type: application/json" \
+     -d '{"loanId":"1234"}'</code></pre>
+
+            <h4>📸 UI View</h4>
+            <p><img src="../../game/image/conductor_test.png" alt="Placeholder for successful Conductor UI execution" style="width:100%; max-width:600px;"></p>
+<p>You should see the task complete successfully in the Conductor UI.</p>
+
+<hr class="blog-divider">
+<p>That's it for your first end-to-end Conductor workflow and worker in Go!</p>
+
             <p>I'll keep exploring advanced features like sub-workflows and decisions. Let me know if you'd like a
                 walkthrough on anything above!</p>
         </div>
