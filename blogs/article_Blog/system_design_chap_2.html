@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buya's Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"
+        integrity="sha256-46qynGAkLSFpVbEBog43gvNhfrOj+BmwXdxFgVK/Kvc=" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,700|Roboto+Slab:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../blogs.css">
+    <script src="https://code.iconify.design/2/2.2.1/iconify.min.js"></script>
+</head>
+
+<body>
+    <ul class="sticky" id="mainMenu">
+        <li class="mainMenuList"><a href="../../index.html">Home</a></li>
+        <li class="mainMenuList"><a href="../../index.html#project">Project</a></li>
+        <li class="mainMenuList"><a href="../../index.html#class">Online class</a></li>
+        <li class="mainMenuList"><a href="../../index.html#competition">Competition</a></li>
+        <li class="mainMenuList"><a href="../../index.html#about">About me</a></li>
+        <li class="mainMenuList"><a href="../blogs.html">Blog</a></li>
+    </ul>
+
+    <div class="container">
+        <div class="blog_section blog-post">
+            <div class="blog-post-header">
+                <img src="../../img/myAvatar1.png" alt="Author avatar" class="blog-avatar">
+                <div>
+                    <h1 class="blog-title">Breaking Down Chapter 2 of System Design Interview by Alex Xu</h1>
+                    <div class="blog-meta">By Buya &bull; <span>September 2025</span></div>
+                </div>
+            </div>
+            <p>Back-of-the-Envelope Estimations for Real-World System Design</p>
+
+            <p>Chapter 2 of Alex Xu's <strong>System Design Interview</strong> is where the book shifts from concepts to
+                math. This chapter introduces the crucial skill of <em>back-of-the-envelope estimation</em> — quick
+                calculations that let you sanity-check your design ideas before committing to a solution.</p>
+
+            <p>Here's my blog-style summary with examples, quick formulas, and a few insights I've picked up along the
+                way.</p>
+            <hr class="blog-divider">
+
+            <h4>🔢 1. Thinking in Units and Conversions</h4>
+            <p>Every estimation starts with data units. Keep these basics in your head:</p>
+            <ul>
+                <li><strong>1 character = 1 byte</strong> (approximation, assuming UTF-8/ASCII).</li>
+                <li><strong>1 byte = 8 bits</strong>.</li>
+                <li>Use powers of 10 for quick math: 1 KB ≈ 1,000 bytes, 1 MB ≈ 1,000 KB, etc.</li>
+            </ul>
+
+            <p>💡 <strong>Tip:</strong> Don’t get hung up on exact numbers (1 KB = 1,024 bytes). In interviews, speed
+                and ballpark accuracy are more important.</p>
+            <hr class="blog-divider">
+
+            <h4>⏱️ 2. Latency Numbers to Keep in Mind</h4>
+            <p>Chapter 2 highlights how crucial latency is in distributed systems. Here's a mental model to memorize:
+            </p>
+            <ul>
+                <li>L1 cache reference: ~0.5 ns</li>
+                <li>L2 cache reference: ~7 ns</li>
+                <li>Main memory (RAM): ~100 ns</li>
+                <li>SSD random read: ~100 μs</li>
+                <li>Disk seek (HDD): ~10 ms</li>
+                <li>Cross data center round trip: ~0.5–1 ms</li>
+                <li>Intercontinental round trip: 100–200 ms</li>
+            </ul>
+
+            <p>🧠 <strong>Key takeaway:</strong> <em>Memory is blazing fast, disk is slow, and network is slower.</em>
+                Use this to justify caching, replication, and minimizing network calls.</p>
+            <hr class="blog-divider">
+
+            <h4>📊 3. QPS (Queries Per Second) Estimation</h4>
+            <p>One of the most common interview tasks is estimating how many requests your system must handle.</p>
+            <p>Example: Suppose we have 1M DAUs, and each user sends 10 requests per day:</p>
+            <pre><code>1M users × 10 req/day = 10M req/day
+10M ÷ 86,400 sec/day ≈ 116 QPS</code></pre>
+
+            <p>This quick calculation tells you how powerful your servers, caches, and databases need to be.</p>
+            <hr class="blog-divider">
+
+            <h4>💾 4. Storage Estimation</h4>
+            <p>Once you know how much data each request generates, you can estimate storage needs.</p>
+            <p>Example: If each request logs 1 KB of data:</p>
+            <pre><code>10M requests × 1 KB = 10 GB/day
+10 GB × 365 ≈ 3.6 TB/year</code></pre>
+
+            <hr class="blog-divider">
+
+            <h4>🛡️ 5. High Availability and SLAs</h4>
+            <p>Availability is the measure of how often your system is operational. SLAs are usually expressed in
+                <strong>nines</strong>:</p>
+            <table>
+                <tr>
+                    <th>Availability</th>
+                    <th>Downtime per Year</th>
+                    <th>Downtime per Day</th>
+                </tr>
+                <tr>
+                    <td>99%</td>
+                    <td>3.65 days</td>
+                    <td>14.4 minutes</td>
+                </tr>
+                <tr>
+                    <td>99.9%</td>
+                    <td>8.76 hours</td>
+                    <td>1.44 minutes</td>
+                </tr>
+                <tr>
+                    <td>99.99%</td>
+                    <td>52.6 minutes</td>
+                    <td>8.6 seconds</td>
+                </tr>
+                <tr>
+                    <td>99.999%</td>
+                    <td>5.26 minutes</td>
+                    <td>0.86 seconds</td>
+                </tr>
+            </table>
+
+            <p>🎯 <strong>Insight:</strong> Going from 99.9% to 99.99% availability cuts downtime by 10x but costs
+                significantly more. Design based on business needs, not just technical ambition.</p>
+            <hr class="blog-divider">
+
+            <h4>🧮 6. A Repeatable Framework</h4>
+            <ol>
+                <li><strong>Clarify assumptions:</strong> DAU, actions per user, request size.</li>
+                <li><strong>Compute QPS:</strong> Requests per second across the system.</li>
+                <li><strong>Estimate storage:</strong> Daily → monthly → yearly growth.</li>
+                <li><strong>Think latency:</strong> Is caching required? Do we need async processing?</li>
+                <li><strong>Check SLA targets:</strong> How many replicas or failover strategies do we need?</li>
+            </ol>
+
+            <p>When you present this in an interview, narrate your thought process. The interviewer wants to see
+                structured reasoning, not perfect arithmetic.</p>
+        </div>
+    </div>
+</body>
+
+</html>
