@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buya's Blog - Symfony PHP Framework Basics</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"
+        integrity="sha256-46qynGAkLSFpVbEBog43gvNhfrOj+BmwXdxFgVK/Kvc=" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,700|Roboto+Slab:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../blogs.css">
+</head>
+
+<body>
+    <ul class="sticky" id="mainMenu">
+        <li class="mainMenuList"><a href="../../index.html">Home</a></li>
+        <li class="mainMenuList"><a href="../../index.html#project">Project</a></li>
+        <li class="mainMenuList"><a href="../../index.html#class">Online class</a></li>
+        <li class="mainMenuList"><a href="../../index.html#competition">Competition</a></li>
+        <li class="mainMenuList"><a href="../../index.html#about">About me</a></li>
+        <li class="mainMenuList"><a href="../blogs.html">Blog</a></li>
+    </ul>
+
+    <div class="container">
+        <div class="blog_section blog-post">
+            <div class="blog-post-header">
+                <img src="../../img/myAvatar1.png" alt="Author avatar" class="blog-avatar">
+                <div>
+                    <h1 class="blog-title">🚀 Symfony PHP Framework Basics – Learn Fast with a Real Example</h1>
+                    <div class="blog-meta">By Buya &bull; <span>October 2025</span></div>
+                </div>
+            </div>
+
+            <p><strong>Symfony</strong> is one of the most powerful PHP frameworks. Instead of a boring 
+               “Hello World”, let’s dive into a <em>real class</em> from a loan system.</p>
+
+            <h4>🔹 Real Example: <code>ProductAssignService</code></h4>
+<pre>
+class ProductAssignService
+{
+    private $loanService;
+    private $logger;
+    private $loanRepo;
+    private $exchangeService;
+    private $params;
+
+    public function __construct(
+        LoanService $loanService,
+        LoggerInterface $logger,
+        LoanRepo $loanRepo,
+        ExchangeRateService $exchangeService
+    ) {
+        $this->loanService = $loanService;
+        $this->logger = $logger;
+        $this->loanRepo = $loanRepo;
+        $this->exchangeService = $exchangeService;
+    }
+
+    public function process($params)
+    {
+        $this->params = $params;
+        $this->validate();
+        $this->productAssign();
+        $this->log();
+    }
+}
+</pre>
+
+            <h4>🔹 Big Picture: How Symfony Apps Work</h4>
+            <p>Here’s the flow of data in Symfony:</p>
+<pre>
+[ Controller ] → [ Service ] → [ Repository ] → [ Database ]
+                      ↓
+                 [ External API ]
+                      ↓
+                   [ Logger ]
+</pre>
+            <p><em>Your service (<code>ProductAssignService</code>) is in the middle of this flow.</em></p>
+
+            <h4>🔹 What You Learn from This Example</h4>
+
+            <h5>Dependency Injection (DI)</h5>
+            <p>Symfony gives you services (LoanService, LoggerInterface, LoanRepo) automatically.</p>
+<pre>
+// No messy "new" keyword everywhere
+</pre>
+
+            <h5>Validation</h5>
+<pre>
+if (!isset($this->params['user'])) {
+    throw new NotEnoughParamException('user');
+}
+</pre>
+            <p>Ensures inputs are correct before running logic.</p>
+
+            <h5>Repositories</h5>
+<pre>
+$productId = $this->loanRepo->getProductIdByCurrency(
+    $user->getCurrency()->getCode()
+);
+</pre>
+            <p>Fetches data from the database.</p>
+
+            <h5>External Services</h5>
+<pre>
+$response = $this->loanService->createProductAssignment($request);
+</pre>
+            <p>Talks to another system (loan consumer service).</p>
+
+            <h5>Logging</h5>
+<pre>
+$this->logger->info('Income verification successful');
+</pre>
+            <p>Keeps track of what happened for debugging.</p>
+
+            <h4>🔹 Why This Matters</h4>
+            <ul>
+                <li><strong>Controller</strong> → should stay small, call a Service</li>
+                <li><strong>Service</strong> → does the business logic (your class)</li>
+                <li><strong>Repository</strong> → handles database work</li>
+                <li><strong>Logger</strong> → helps debug</li>
+                <li><strong>External Service</strong> → connects to outside APIs</li>
+            </ul>
+
+            <p>This separation keeps Symfony apps <strong>clean, testable, and easy to grow</strong>.</p>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buya's Blog - Rate Limiter</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"
+        integrity="sha256-46qynGAkLSFpVbEBog43gvNhfrOj+BmwXdxFgVK/Kvc=" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,700|Roboto+Slab:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../blogs.css">
+</head>
+
+<body>
+    <ul class="sticky" id="mainMenu">
+        <li class="mainMenuList"><a href="../../index.html">Home</a></li>
+        <li class="mainMenuList"><a href="../../index.html#project">Project</a></li>
+        <li class="mainMenuList"><a href="../../index.html#class">Online class</a></li>
+        <li class="mainMenuList"><a href="../../index.html#competition">Competition</a></li>
+        <li class="mainMenuList"><a href="../../index.html#about">About me</a></li>
+        <li class="mainMenuList"><a href="../blogs.html">Blog</a></li>
+    </ul>
+
+    <div class="container">
+        <div class="blog_section blog-post">
+            <div class="blog-post-header">
+                <img src="../../img/myAvatar1.png" alt="Author avatar" class="blog-avatar">
+                <div>
+                    <h1 class="blog-title">Rate Limiter — a simple, easy-to-understand guide</h1>
+                    <div class="blog-meta">By Buya &bull; <span>September 2025</span></div>
+                </div>
+            </div>
+
+            <p><strong>Notes & plain explanations from Chapter 4 — Design: Rate Limiter</strong></p>
+
+            <p>If you’re new to system design or prepping for interviews, a rate limiter is a classic topic. Below is a clean, friendly walkthrough of what a rate limiter does, common algorithms, a simple interview-ready design approach, and useful trade-offs — written from my notes and expanded where helpful.</p>
+
+            <h4>What is a rate limiter?</h4>
+            <p>A rate limiter controls how many requests a client can send in a given time window. Think of it like a bouncer at a club: if too many people try to get in at once, the bouncer slows them down or blocks some. Rate limiting protects services from spikes, abusive clients, and accidental overload.</p>
+            <p><strong>Short rule-of-thumb:</strong> if requests exceed the configured limit (or exceed it repeatedly — e.g., 3× the limit), the system can throttle or block that client.</p>
+
+            <h4>Why use a rate limiter? (Benefits)</h4>
+            <ul>
+                <li>Prevent DoS (Denial of Service) — stops a flood of requests from taking down the service.</li>
+                <li>Reduce cost — fewer unnecessary requests means fewer servers, fewer billable operations (if you’re billed per call).</li>
+                <li>Prevent overload — keeps backend services healthy and responsive.</li>
+            </ul>
+
+            <h3>Common algorithms (simple explanations + when to use)</h3>
+
+            <h4>1. Token Bucket</h4>
+            <p><strong>What it is:</strong> Tokens are added to a bucket at a fixed rate (say r tokens/sec) up to a maximum capacity C. Each request consumes one token. If tokens are available, the request passes; otherwise it’s rejected.</p>
+            <p><strong>Analogy:</strong> A bucket gets refilled slowly; each request takes a coin. If the bucket’s empty you can’t take a coin.</p>
+            <p><strong>Pros:</strong> Supports bursts (you can save tokens and use them later).</p>
+            <p><strong>Cons:</strong> Needs a way to track tokens (but lightweight).</p>
+            <p><strong>When to use:</strong> APIs where short bursts are OK but long-term rate should be controlled (common in API gateways).</p>
+            <pre><code>now = current_time()
+tokens += (now - last_time) * rate
+tokens = min(tokens, capacity)
+if tokens >= 1:
+    tokens -= 1
+    allow_request()
+else:
+    deny_request()
+last_time = now</code></pre>
+
+            <h4>2. Leaky Bucket</h4>
+            <p><strong>What it is:</strong> Requests enter a queue and are processed at a steady (leaky) rate. If the queue is full, new requests are dropped.</p>
+            <p><strong>Analogy:</strong> A bucket with a small hole — water (requests) pours in but slowly leaks out at a fixed rate.</p>
+            <p><strong>Pros:</strong> Smooths bursts; enforces constant output rate.</p>
+            <p><strong>Cons:</strong> If incoming rate is higher than leak rate for long, queue fills and requests drop.</p>
+            <p><strong>When to use:</strong> Systems that must smooth traffic to fixed, steady throughput.</p>
+
+            <h4>3. Fixed Window Counter</h4>
+            <p><strong>What it is:</strong> Divide time into fixed windows (e.g., 1 minute). Count requests in the current window. If count &gt; limit, reject.</p>
+            <p><strong>Pros:</strong> Very simple, fast, low memory.</p>
+            <p><strong>Cons:</strong> Boundary problem — a client can do near-limit at the end of minute N and again at the start of N+1 and effectively double the limit in a short time.</p>
+            <p><strong>When to use:</strong> Very simple needs where precision isn’t critical.</p>
+
+            <h4>4. Sliding Window Log</h4>
+            <p><strong>What it is:</strong> For each client, store timestamps of each request. To check allowance, remove timestamps older than the window and count the rest.</p>
+            <p><strong>Pros:</strong> Accurate.</p>
+            <p><strong>Cons:</strong> High memory & storage cost (you store every request timestamp).</p>
+            <p><strong>When to use:</strong> When you need exact enforcement and traffic volume is small/medium.</p>
+
+            <h4>5. Sliding Window Counter (approximation)</h4>
+            <p><strong>What it is:</strong> Split time into smaller fixed sub-windows and keep counters for each. Estimate the current rate by weighting current and previous sub-windows.</p>
+            <p><strong>Pros:</strong> Compromise between accuracy and memory. Lower cost than full log, better than fixed-window for boundary issues.</p>
+            <p><strong>Cons:</strong> Slight approximation; some complexity.</p>
+
+            <h4>Quick algorithm comparison (short)</h4>
+            <ul>
+                <li>Need bursts? → Token Bucket.</li>
+                <li>Need a strict constant output? → Leaky Bucket.</li>
+                <li>Simple & cheap? → Fixed Window.</li>
+                <li>Most accurate but expensive? → Sliding Window Log.</li>
+                <li>Good approximation + cheaper? → Sliding Window Counter.</li>
+            </ul>
+        </div>
+    </div>
+</body>
+
+</html>

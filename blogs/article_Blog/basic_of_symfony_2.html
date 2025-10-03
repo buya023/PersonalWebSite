@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buya's Blog - Symfony PHP Framework Basics 2</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"
+        integrity="sha256-46qynGAkLSFpVbEBog43gvNhfrOj+BmwXdxFgVK/Kvc=" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,700|Roboto+Slab:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../blogs.css">
+</head>
+
+<body>
+    <ul class="sticky" id="mainMenu">
+        <li class="mainMenuList"><a href="../../index.html">Home</a></li>
+        <li class="mainMenuList"><a href="../../index.html#project">Project</a></li>
+        <li class="mainMenuList"><a href="../../index.html#class">Online class</a></li>
+        <li class="mainMenuList"><a href="../../index.html#competition">Competition</a></li>
+        <li class="mainMenuList"><a href="../../index.html#about">About me</a></li>
+        <li class="mainMenuList"><a href="../blogs.html">Blog</a></li>
+    </ul>
+
+    <div class="container">
+        <div class="blog_section blog-post">
+            <div class="blog-post-header">
+                <img src="../../img/myAvatar1.png" alt="Author avatar" class="blog-avatar">
+                <div>
+                    <h1 class="blog-title">🚀 Symfony PHP Framework Basics 2 – Next Step with Services & APIs</h1>
+                    <div class="blog-meta">By Buya &bull; <span>October 2025</span></div>
+                </div>
+            </div>
+
+            <p><strong>In the previous blog</strong>, we learned the basics with the
+                <code>ProductAssignService</code> class and saw how a Symfony service fits in the app flow.  
+                Now, let’s go one step further and explore <strong>services, dependency injection, and API calls</strong>.
+            </p>
+
+            <h3>1. Services in Symfony</h3>
+            <p>A <strong>service</strong> is a PHP class that contains business logic. Controllers stay clean by calling
+                services, and services can be reused across your app.</p>
+
+<pre><code>class ProductAssignService
+{
+    private $loanService;
+    private $logger;
+
+    public function __construct(LoanService $loanService, LoggerInterface $logger)
+    {
+        $this-&gt;loanService = $loanService;
+        $this-&gt;logger = $logger;
+    }
+
+    public function process($params)
+    {
+        $this-&gt;validate();
+        $this-&gt;productAssign();
+        $this-&gt;log();
+    }
+}
+</code></pre>
+
+            <p><strong>✅ Key Takeaway:</strong><br>
+                Logic goes in <em>services</em>, not controllers.<br>
+                Makes your code <em>reusable</em> and <em>testable</em>.
+            </p>
+
+            <h3>2. Dependency Injection (DI)</h3>
+            <p>Symfony automatically injects dependencies into your service:</p>
+
+<pre><code>public function __construct(LoanService $loanService, LoggerInterface $logger)
+</code></pre>
+
+            <p>No need to manually create objects with <code>new</code>.  
+                Cleaner, easier to maintain and test.</p>
+
+            <h4>Flow Diagram:</h4>
+<pre><code>Controller
+   │
+   ▼
+ProductAssignService ← LoanService, LoggerInterface (injected)
+   │
+   ▼
+Repository / External API
+</code></pre>
+
+            <h3>3. API Interaction</h3>
+            <p>Your service can call external APIs or other microservices:</p>
+
+<pre><code>$response = $this-&gt;loanService-&gt;createProductAssignment($request);
+</code></pre>
+
+            <ul>
+                <li>Sends request to <code>LoanService</code></li>
+                <li>Receives a response</li>
+                <li>Keeps logic inside the service, not the controller</li>
+            </ul>
+
+            <p><strong>Why it matters:</strong></p>
+            <ul>
+                <li>Keeps code organized</li>
+                <li>Allows unit testing by mocking external APIs</li>
+            </ul>
+
+            <h3>4. Logging & Error Handling</h3>
+            <p>Always log important info and handle exceptions:</p>
+
+<pre><code>try {
+    $this-&gt;loanService-&gt;createProductAssignment($request);
+} catch (BaseException $e) {
+    $this-&gt;logger-&gt;error('Product assignment failed: ' . $e-&gt;getMessage());
+}
+</code></pre>
+
+            <ul>
+                <li>Helps debug production issues</li>
+                <li>Keeps controllers clean</li>
+            </ul>
+
+            <h3>5. Service Flow Recap</h3>
+<pre><code>[Controller] → calls → [ProductAssignService]
+                        │
+                        ▼
+                  validate() → check params
+                        │
+                        ▼
+                  productAssign() → API call
+                        │
+                        ▼
+                  log() → record success/error
+</code></pre>
+
+            <p><strong>Takeaways:</strong></p>
+            <ul>
+                <li>Controller handles request</li>
+                <li>Service handles business logic</li>
+                <li>Repository/API handles data</li>
+                <li>Logger handles debugging</li>
+            </ul>
+
+            <h3>✅ Quick Recap</h3>
+            <ul>
+                <li>Keep controllers small &amp; clean</li>
+                <li>Put logic in reusable services</li>
+                <li>Use dependency injection for easy testing</li>
+                <li>Call APIs safely and handle errors</li>
+                <li>Log everything for debugging &amp; monitoring</li>
+            </ul>
+
+            <p>👉 <em>Next step:</em> Combine this Symfony backend with a dynamic frontend using JavaScript for interactivity (see <strong>Basics 3</strong>).</p>
+        </div>
+    </div>
+</body>
+
+</html>

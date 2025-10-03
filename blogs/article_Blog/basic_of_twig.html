@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buya's Blog - Most Used Twig Features</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"
+        integrity="sha256-46qynGAkLSFpVbEBog43gvNhfrOj+BmwXdxFgVK/Kvc=" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,700|Roboto+Slab:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../blogs.css">
+</head>
+
+<body>
+    <ul class="sticky" id="mainMenu">
+        <li class="mainMenuList"><a href="../../index.html">Home</a></li>
+        <li class="mainMenuList"><a href="../../index.html#project">Project</a></li>
+        <li class="mainMenuList"><a href="../../index.html#class">Online class</a></li>
+        <li class="mainMenuList"><a href="../../index.html#competition">Competition</a></li>
+        <li class="mainMenuList"><a href="../../index.html#about">About me</a></li>
+        <li class="mainMenuList"><a href="../blogs.html">Blog</a></li>
+    </ul>
+
+    <div class="container">
+        <div class="blog_section blog-post">
+            <div class="blog-post-header">
+                <img src="../../img/myAvatar1.png" alt="Author avatar" class="blog-avatar">
+                <div>
+                    <h1 class="blog-title">🌿 Most Used Twig Features – Daily Essentials</h1>
+                    <div class="blog-meta">By Buya &bull; <span>October 2025</span></div>
+                </div>
+            </div>
+
+            <p><strong>Twig</strong> is a powerful templating engine in Symfony.  
+            Here are the <em>most used features</em> that cover 90% of daily work with Twig.</p>
+
+            <h3>1. Variables & Filters (Output)</h3>
+<pre><code>{{ variable }}             {# Print variable #}
+{{ user.name|upper }}      {# Apply filter: BUYA #}
+{{ post.date|date("Y-m-d") }}  {# Format date #}
+{{ items|length }}         {# Count items #}
+{{ var|default('N/A') }}   {# Fallback if var is null #}
+</code></pre>
+
+            <h3>2. Conditionals</h3>
+<pre><code>{% if user %}
+    Hello {{ user.name }}
+{% else %}
+    Guest
+{% endif %}
+</code></pre>
+
+            <h3>3. Loops</h3>
+<pre><code>{% for product in products %}
+    {{ loop.index }}. {{ product.name }}
+{% else %}
+    No products found.
+{% endfor %}
+</code></pre>
+
+            <p><strong>Loop helpers:</strong></p>
+            <ul>
+                <li><code>loop.index</code> → 1-based index</li>
+                <li><code>loop.first</code>, <code>loop.last</code></li>
+                <li><code>loop.revindex</code> → reverse index</li>
+            </ul>
+
+            <h3>4. Template Inheritance (Layouts)</h3>
+            <p><strong>Base layout:</strong></p>
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+  &lt;body&gt;
+    {% block content %}{% endblock %}
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+            <p><strong>Child template:</strong></p>
+<pre><code>{% extends 'base.html.twig' %}
+
+{% block content %}
+    &lt;h1&gt;Welcome {{ user.name }}&lt;/h1&gt;
+{% endblock %}
+</code></pre>
+
+            <h3>5. Includes & Partials</h3>
+<pre><code>{% include 'partials/header.html.twig' %}
+</code></pre>
+
+            <h3>6. Escaping & Raw</h3>
+<pre><code>{{ comment|e }}     {# Escapes HTML → safe #}
+{{ comment|raw }}   {# Output raw HTML (dangerous) #}
+</code></pre>
+
+            <h3>7. Translation (i18n)</h3>
+<pre><code>{{ 'welcome.message'|trans({'%name%': user.name}) }}
+</code></pre>
+
+            <h3>8. Debugging</h3>
+<pre><code>{{ dump(user) }}     {# Needs Symfony Debug enabled #}
+</code></pre>
+
+            <h3>9. Macros (Reusable Snippets)</h3>
+<pre><code>{# forms.html.twig #}
+{% macro input(name, value='') %}
+  &lt;input name="{{ name }}" value="{{ value }}">
+{% endmacro %}
+</code></pre>
+
+            <p><strong>Usage:</strong></p>
+<pre><code>{% import 'forms.html.twig' as forms %}
+{{ forms.input('username') }}
+</code></pre>
+
+            <h3>✅ Quick Recap</h3>
+            <ul>
+                <li><strong>Variables + Filters</strong> → <code>{{ }}</code></li>
+                <li><strong>Logic + Loops</strong> → <code>{% if %}</code>, <code>{% for %}</code></li>
+                <li><strong>Inheritance + Includes</strong> → layouts &amp; partials</li>
+                <li><strong>Escaping + Translation</strong> → security &amp; i18n</li>
+                <li><strong>Debugging + Macros</strong> → developer helpers</li>
+            </ul>
+
+            <p><em>That’s basically 90% of daily Twig usage 🎯</em></p>
+        </div>
+    </div>
+</body>
+
+</html>

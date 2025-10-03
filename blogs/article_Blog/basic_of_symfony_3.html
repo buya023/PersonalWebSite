@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buya's Blog - Symfony PHP Framework Basics 3</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"
+        integrity="sha256-46qynGAkLSFpVbEBog43gvNhfrOj+BmwXdxFgVK/Kvc=" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,700|Roboto+Slab:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../blogs.css">
+</head>
+
+<body>
+    <ul class="sticky" id="mainMenu">
+        <li class="mainMenuList"><a href="../../index.html">Home</a></li>
+        <li class="mainMenuList"><a href="../../index.html#project">Project</a></li>
+        <li class="mainMenuList"><a href="../../index.html#class">Online class</a></li>
+        <li class="mainMenuList"><a href="../../index.html#competition">Competition</a></li>
+        <li class="mainMenuList"><a href="../../index.html#about">About me</a></li>
+        <li class="mainMenuList"><a href="../blogs.html">Blog</a></li>
+    </ul>
+
+    <div class="container">
+        <div class="blog_section blog-post">
+            <div class="blog-post-header">
+                <img src="../../img/myAvatar1.png" alt="Author avatar" class="blog-avatar">
+                <div>
+                    <h1 class="blog-title">🚀 Symfony PHP Framework Basics 3 – Dynamic Frontend with APIs</h1>
+                    <div class="blog-meta">By Buya &bull; <span>October 2025</span></div>
+                </div>
+            </div>
+
+            <p><strong>In the previous blogs</strong>, we learned about services, dependency injection, validation, and API calls using <code>ProductAssignService</code>.  
+            Now, let’s see how to make your Symfony backend interact with a dynamic frontend using JavaScript and JSON APIs.</p>
+
+            <h3>1. REST API Endpoint in Symfony</h3>
+            <p>Create a controller that returns JSON to the frontend:</p>
+
+<pre><code>#[Route('/api/products', name: 'api_products', methods: ['GET'])]
+public function getProducts(ProductAssignService $service): JsonResponse
+{
+    $products = $service->getProducts(); // Fetch from DB or external API
+    return $this->json($products);
+}
+</code></pre>
+
+            <ul>
+                <li><code>#[Route(..., methods: ['GET'])]</code> → defines the API URL and HTTP method</li>
+                <li><code>JsonResponse</code> → ensures data is returned as JSON</li>
+            </ul>
+
+            <h3>2. JavaScript Fetch Example</h3>
+            <p>Use JavaScript <code>fetch()</code> to request data from your Symfony API and display it:</p>
+
+<pre><code>&lt;script&gt;
+fetch('/api/products')
+    .then(response =&gt; response.json())
+    .then(data =&gt; {
+        const container = document.getElementById('product-list');
+        container.innerHTML = data.map(p =&gt; `&lt;li&gt;${p.name} - ${p.amount}&lt;/li&gt;`).join('');
+    })
+    .catch(error =&gt; console.error('Error:', error));
+&lt;/script&gt;
+</code></pre>
+
+            <p><strong>Key points:</strong></p>
+            <ul>
+                <li>Fetch data from API</li>
+                <li>Update HTML dynamically</li>
+                <li>Handle errors gracefully</li>
+            </ul>
+
+            <h3>3. Dynamic HTML with Twig + JS</h3>
+            <p>Example Twig template:</p>
+
+<pre><code>&lt;div id="product-list"&gt;
+  &lt;!-- Products will be loaded here by JS --&gt;
+&lt;/div&gt;
+</code></pre>
+
+            <ul>
+                <li>Twig template provides structure</li>
+                <li>JavaScript injects API data</li>
+                <li>Backend and frontend stay separate but interactive</li>
+            </ul>
+
+            <h3>4. How Symfony + JS Works Together</h3>
+<pre><code>[Browser] → JS Fetch → [Symfony API Controller] 
+                         │
+                         ▼
+                  [ProductAssignService] → [Repository / API]
+                         │
+                         ▼
+                     JsonResponse
+                         │
+                         ▼
+[Browser] ← JS receives data ← updates DOM dynamically
+</code></pre>
+
+            <ul>
+                <li>Backend → handles logic & data</li>
+                <li>Frontend → handles UI & interactivity</li>
+                <li>Separation → clean, maintainable, scalable apps</li>
+            </ul>
+
+            <h3>5. Quick Tips</h3>
+            <ul>
+                <li>Always return JSON from API endpoints</li>
+                <li>Use services for logic, not controllers</li>
+                <li>Log errors inside services</li>
+                <li>Pair with Bootstrap for a nice responsive UI</li>
+            </ul>
+
+            <h3>✅ Quick Recap</h3>
+            <ul>
+                <li>Fetch data dynamically from Symfony backend</li>
+                <li>Render HTML with JS, no page reload</li>
+                <li>Keep backend & frontend separate but connected</li>
+                <li>Create modern, interactive web apps</li>
+            </ul>
+
+            <p>🎉 Congratulations! With this final part, you now know how to build a full Symfony web application:  
+            from services and validation to APIs and frontend interactivity.</p>
+
+        </div>
+    </div>
+</body>
+</html>
