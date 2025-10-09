@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buya's Blog - Python bisect Module</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"
+        integrity="sha256-46qynGAkLSFpVbEBog43gvNhfrOj+BmwXdxFgVK/Kvc=" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,700|Roboto+Slab:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../blogs.css">
+</head>
+
+<body>
+    <ul class="sticky" id="mainMenu">
+        <li class="mainMenuList"><a href="../../index.html">Home</a></li>
+        <li class="mainMenuList"><a href="../../index.html#project">Project</a></li>
+        <li class="mainMenuList"><a href="../../index.html#class">Online class</a></li>
+        <li class="mainMenuList"><a href="../../index.html#competition">Competition</a></li>
+        <li class="mainMenuList"><a href="../../index.html#about">About me</a></li>
+        <li class="mainMenuList"><a href="../blogs.html">Blog</a></li>
+    </ul>
+
+    <div class="container">
+        <div class="blog_section blog-post">
+            <div class="blog-post-header">
+                <img src="../../img/myAvatar1.png" alt="Author avatar" class="blog-avatar">
+                <div>
+                    <h1 class="blog-title">🌿 Python bisect Module — Binary Search Made Simple</h1>
+                    <div class="blog-meta">By Buya &bull; <span>October 2025</span></div>
+                </div>
+            </div>
+
+            <p><strong>bisect</strong> is a Python module that helps you perform fast <em>binary search</em> on sorted lists.
+                It lets you insert, locate, or maintain elements efficiently without manually looping.</p>
+
+            <h3>💡 Why use bisect?</h3>
+            <ul>
+                <li>Built-in <strong>binary search</strong> (no loops required)</li>
+                <li>Runs in <strong>O(log n)</strong> time</li>
+                <li>Keeps lists <strong>sorted automatically</strong></li>
+                <li>Perfect for ranking systems, leaderboards, or cumulative data</li>
+            </ul>
+
+            <h3>⚙️ Basic Functions</h3>
+            <table>
+                <tr><th>Function</th><th>Description</th><th>Example</th></tr>
+                <tr><td><code>bisect_left(a, x)</code></td><td>Find leftmost index for <code>x</code></td><td><code>bisect_left([1,2,4,4,5], 4) → 2</code></td></tr>
+                <tr><td><code>bisect_right(a, x)</code></td><td>Find rightmost index for <code>x</code></td><td><code>bisect_right([1,2,4,4,5], 4) → 4</code></td></tr>
+                <tr><td><code>insort_left(a, x)</code></td><td>Insert <code>x</code> on left side (keeps sorted)</td><td><code>[1,2,4,4,4,5]</code></td></tr>
+                <tr><td><code>insort_right(a, x)</code></td><td>Insert <code>x</code> on right side</td><td><code>[1,2,4,4,4,5]</code></td></tr>
+            </table>
+
+            <h3>🧩 Example: Searching for a Value</h3>
+<pre><code>import bisect
+
+nums = [1, 2, 4, 4, 5]
+x = 4
+
+i = bisect.bisect_left(nums, x)
+if i < len(nums) and nums[i] == x:
+    print(f"{x} found at index {i}")
+else:
+    print(f"{x} not found")
+
+# Output: 4 found at index 2
+</code></pre>
+
+            <h3>🌱 Example: Inserting While Keeping Sorted</h3>
+<pre><code>from bisect import insort
+
+scores = [10, 20, 30, 40]
+insort(scores, 25)
+print(scores)
+# Output: [10, 20, 25, 30, 40]
+</code></pre>
+
+            <h3>🔍 Example: Counting Duplicates Efficiently</h3>
+<pre><code>import bisect
+
+nums = [1, 2, 4, 4, 4, 5]
+left = bisect.bisect_left(nums, 4)
+right = bisect.bisect_right(nums, 4)
+count = right - left
+
+print("Number of 4s:", count)
+# Output: Number of 4s: 3
+</code></pre>
+
+            <h3>⚔️ Real Use Case: Find Common Element in Two Sorted Arrays</h3>
+<pre><code>import bisect
+
+def getCommon(nums1, nums2):
+    if len(nums1) > len(nums2):
+        nums1, nums2 = nums2, nums1
+
+    for num in nums1:
+        i = bisect.bisect_left(nums2, num)
+        if i &lt; len(nums2) and nums2[i] == num:
+            return num
+    return -1
+
+print(getCommon([1,2,3,6], [2,4,5,6]))
+# Output: 2
+</code></pre>
+
+            <h3>🕒 Time Complexity</h3>
+            <ul>
+                <li><strong>Search / Insert:</strong> O(log n)</li>
+                <li><strong>List stays sorted</strong> automatically</li>
+            </ul>
+
+            <h3>✅ Quick Recap</h3>
+            <ul>
+                <li><strong>bisect_left(a, x)</strong> → leftmost position</li>
+                <li><strong>bisect_right(a, x)</strong> → rightmost position</li>
+                <li><strong>insort_left(a, x)</strong> → insert while keeping sorted</li>
+                <li><strong>insort_right(a, x)</strong> → insert after duplicates</li>
+                <li><strong>Count duplicates:</strong> <code>bisect_right - bisect_left</code></li>
+            </ul>
+        </div>
+    </div>
+</body>
+
+</html>

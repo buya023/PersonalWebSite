@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buya's Blog - Binary Search Explained Simply</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"
+        integrity="sha256-46qynGAkLSFpVbEBog43gvNhfrOj+BmwXdxFgVK/Kvc=" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,700|Roboto+Slab:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../blogs.css">
+</head>
+
+<body>
+    <ul class="sticky" id="mainMenu">
+        <li class="mainMenuList"><a href="../../index.html">Home</a></li>
+        <li class="mainMenuList"><a href="../../index.html#project">Project</a></li>
+        <li class="mainMenuList"><a href="../../index.html#class">Online class</a></li>
+        <li class="mainMenuList"><a href="../../index.html#competition">Competition</a></li>
+        <li class="mainMenuList"><a href="../../index.html#about">About me</a></li>
+        <li class="mainMenuList"><a href="../blogs.html">Blog</a></li>
+    </ul>
+
+    <div class="container">
+        <div class="blog_section blog-post">
+            <div class="blog-post-header">
+                <img src="../../img/myAvatar1.png" alt="Author avatar" class="blog-avatar">
+                <div>
+                    <h1 class="blog-title">🔍 Binary Search — The Smart Way to Search</h1>
+                    <div class="blog-meta">By Buya &bull; <span>October 2025</span></div>
+                </div>
+            </div>
+
+            <p><strong>Binary Search</strong> is one of the most efficient and elegant algorithms in computer science.
+                It helps you find an element in a <em>sorted</em> list quickly — in just <strong>O(log n)</strong> time.
+                Let’s explore how it works step by step in a simple way 👇</p>
+
+            <h3>1. What Is Binary Search?</h3>
+            <p>Binary search is a <strong>divide and conquer</strong> algorithm. It repeatedly divides the search space
+                in half until the target value is found (or determined not to exist).</p>
+
+            <p>Imagine you’re searching for a word in a dictionary — you don’t check each word one by one. Instead, you
+                open the middle, compare, and decide whether to go left or right. That’s exactly what binary search does.
+            </p>
+
+            <h3>2. When Can You Use It?</h3>
+            <ul>
+                <li>The data must be <strong>sorted</strong> (ascending or descending).</li>
+                <li>You must have <strong>random access</strong> (like in an array or list).</li>
+            </ul>
+
+            <h3>3. How It Works (Step-by-Step)</h3>
+            <p>Let’s take an example:</p>
+<pre><code>nums = [1, 3, 5, 7, 9, 11]
+target = 7
+</code></pre>
+
+            <p>Steps:</p>
+            <ol>
+                <li>Start with two pointers:
+                    <code>left = 0</code>, <code>right = len(nums) - 1</code></li>
+                <li>Find the middle index:
+                    <code>mid = (left + right) // 2</code></li>
+                <li>Compare <code>nums[mid]</code> with <code>target</code>:
+                    <ul>
+                        <li>If equal → found it!</li>
+                        <li>If smaller → move <code>left</code> to <code>mid + 1</code></li>
+                        <li>If larger → move <code>right</code> to <code>mid - 1</code></li>
+                    </ul>
+                </li>
+                <li>Repeat until <code>left &gt; right</code> (meaning not found).</li>
+            </ol>
+
+            <h3>4. Python Example</h3>
+<pre><code>def binary_search(nums, target):
+    left, right = 0, len(nums) - 1
+
+    while left <= right:
+        mid = (left + right) // 2
+        if nums[mid] == target:
+            return mid  # found
+        elif nums[mid] < target:
+            left = mid + 1
+        else:
+            right = mid - 1
+
+    return -1  # not found
+
+print(binary_search([1, 3, 5, 7, 9, 11], 7))  # Output: 3
+</code></pre>
+
+            <h3>5. Visual Example</h3>
+            <p><strong>Step 1:</strong> [1, 3, <span style="color:green;">5</span>, 7, 9, 11] → target = 7 → move right</p>
+            <p><strong>Step 2:</strong> [7, <span style="color:green;">9</span>, 11] → found at 7 ✅</p>
+
+            <h3>6. Time Complexity</h3>
+            <ul>
+                <li><strong>Best case:</strong> O(1) (found in first check)</li>
+                <li><strong>Worst case:</strong> O(log n)</li>
+                <li><strong>Space:</strong> O(1) (iterative)</li>
+            </ul>
+
+            <h3>7. Common Binary Search Variants</h3>
+            <ul>
+                <li><strong>Find first or last occurrence</strong> of an element</li>
+                <li><strong>Find smallest element greater than or equal to</strong> target</li>
+                <li><strong>Search in rotated sorted array</strong></li>
+                <li><strong>Find square root, peak element, insert position</strong></li>
+            </ul>
+
+
+            <h3>✅ Quick Recap</h3>
+            <ul>
+                <li>Binary Search works only on <strong>sorted data</strong>.</li>
