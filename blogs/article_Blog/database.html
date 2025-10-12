@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buya's Blog - Everything You Need to Know About Databases</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"
+        integrity="sha256-46qynGAkLSFpVbEBog43gvNhfrOj+BmwXdxFgVK/Kvc=" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,700|Roboto+Slab:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../blogs.css">
+</head>
+
+<body>
+    <ul class="sticky" id="mainMenu">
+        <li class="mainMenuList"><a href="../../index.html">Home</a></li>
+        <li class="mainMenuList"><a href="../../index.html#project">Project</a></li>
+        <li class="mainMenuList"><a href="../../index.html#class">Online class</a></li>
+        <li class="mainMenuList"><a href="../../index.html#competition">Competition</a></li>
+        <li class="mainMenuList"><a href="../../index.html#about">About me</a></li>
+        <li class="mainMenuList"><a href="../blogs.html">Blog</a></li>
+    </ul>
+
+    <div class="container">
+        <div class="blog_section blog-post">
+            <div class="blog-post-header">
+                <img src="../../img/myAvatar1.png" alt="Author avatar" class="blog-avatar">
+                <div>
+                    <h1 class="blog-title">🗄️ Everything You Need to Know About Databases</h1>
+                    <div class="blog-meta">By Buya &bull; <span>October 2025</span></div>
+                </div>
+            </div>
+
+            <p>Databases are the <strong>heart of every application</strong> — from websites and mobile apps to big data
+                systems and AI platforms.  
+                In this blog, let’s break down <em>everything you need to know about databases</em> — from basic concepts
+                to modern architectures — in a clear, structured way 💡</p>
+
+            <h3>1. What Is a Database?</h3>
+            <p>A <strong>database</strong> is an organized collection of data that can be easily accessed, managed, and
+                updated.  
+                Think of it as a digital filing cabinet where data is stored efficiently and securely.</p>
+
+            <h3>2. Common Database Terminology</h3>
+            <ul>
+                <li><strong>Data:</strong> Raw facts — like names, numbers, prices.</li>
+                <li><strong>Table:</strong> A structured set of data (rows & columns).</li>
+                <li><strong>Row (Record):</strong> One entry (like a student).</li>
+                <li><strong>Column (Field):</strong> A property (like name or age).</li>
+                <li><strong>Primary Key:</strong> Unique ID for each record.</li>
+                <li><strong>Foreign Key:</strong> A reference to another table’s primary key.</li>
+            </ul>
+
+            <h3>3. Why Do We Use Databases?</h3>
+            <ul>
+                <li>To store large data securely</li>
+                <li>To retrieve data efficiently</li>
+                <li>To maintain consistency and relationships</li>
+                <li>To allow multiple users to access and modify data safely</li>
+            </ul>
+
+            <h3>4. Types of Databases</h3>
+            <h4>🔹 1. Relational Databases (SQL)</h4>
+            <p>Data is stored in tables with relationships. Uses <strong>SQL (Structured Query Language)</strong>.</p>
+            <ul>
+                <li>Examples: MySQL, PostgreSQL, SQLite, Oracle, SQL Server</li>
+                <li>Best for: Structured data and strong consistency</li>
+            </ul>
+
+<pre><code>SELECT * FROM users WHERE age > 25;
+</code></pre>
+
+            <h4>🔹 2. NoSQL Databases (Non-relational)</h4>
+            <p>Data is stored in flexible formats — documents, key-value pairs, graphs, or columns.</p>
+            <ul>
+                <li>Examples: MongoDB, Redis, Cassandra, Neo4j, Firebase</li>
+                <li>Best for: Unstructured or semi-structured data, scalability</li>
+            </ul>
+
+<pre><code>{
+  "name": "Buya",
+  "skills": ["Python", "React", "SQL"]
+}
+</code></pre>
+
+            <h4>🔹 3. In-memory Databases</h4>
+            <p>Store data in RAM for extremely fast access.</p>
+            <ul>
+                <li>Examples: Redis, Memcached</li>
+                <li>Best for: Caching, real-time analytics</li>
+            </ul>
+
+            <h4>🔹 4. Cloud Databases</h4>
+            <p>Hosted and managed by cloud providers.</p>
+            <ul>
+                <li>Examples: Amazon RDS, Google Cloud SQL, Firebase</li>
+                <li>Best for: Scalability, easy maintenance</li>
+            </ul>
+
+            <h3>5. What Is SQL?</h3>
+            <p><strong>SQL (Structured Query Language)</strong> is used to manage and query relational databases.</p>
+
+<pre><code>CREATE TABLE users (
+  id INT PRIMARY KEY,
+  name TEXT,
+  email TEXT
+);
+
+INSERT INTO users (id, name, email)
+VALUES (1, 'Buya', 'buya@example.com');
+
+SELECT * FROM users WHERE name = 'Buya';
+</code></pre>
+
+            <h3>6. Key Concepts in Database Design</h3>
+            <ul>
+                <li><strong>Normalization:</strong> Organizing data to reduce redundancy.</li>
+                <li><strong>Relationships:</strong> Connect tables via keys.</li>
+                <li><strong>Indexes:</strong> Speed up queries by indexing key columns.</li>
+                <li><strong>Transactions:</strong> Group operations that must all succeed or fail together.</li>
+                <li><strong>Constraints:</strong> Rules (like NOT NULL, UNIQUE, FOREIGN KEY).</li>
+            </ul>
+
+            <h3>7. ACID Properties (Reliability)</h3>
+            <ul>
+                <li><strong>Atomicity:</strong> All or nothing.</li>
+                <li><strong>Consistency:</strong> Valid state after each transaction.</li>
+                <li><strong>Isolation:</strong> Transactions don’t interfere.</li>
+                <li><strong>Durability:</strong> Data is saved even after crash.</li>
+            </ul>
+
+            <h3>8. Indexes and Performance</h3>
+            <p>Indexes make queries faster, just like an index in a book helps you find topics quickly.</p>
+            <ul>
+                <li>Too many indexes = slower writes</li>
+                <li>Right indexes = faster reads</li>
+            </ul>
+
+            <h3>9. Database vs. Data Warehouse vs. Data Lake</h3>
+            <ul>
+                <li><strong>Database:</strong> For real-time app data (CRUD operations)</li>
+                <li><strong>Data Warehouse:</strong> For analytics and reporting</li>
+                <li><strong>Data Lake:</strong> For storing raw, unstructured data (like logs, images)</li>
+            </ul>
+
+            <h3>10. Modern Database Trends</h3>
+            <ul>
+                <li>Distributed Databases (e.g., CockroachDB)</li>
+                <li>Graph Databases (Neo4j, Amazon Neptune)</li>
+                <li>Time-Series Databases (InfluxDB)</li>
+                <li>Serverless Databases (FaunaDB, Firebase)</li>
+            </ul>
+
+            <h3>11. Backup and Security</h3>
+            <ul>
+                <li>Use <strong>encryption</strong> for sensitive data.</li>
+                <li>Perform <strong>regular backups</strong>.</li>
+                <li>Control access with <strong>roles and permissions</strong>.</li>
+                <li>Use <strong>replication</strong> for high availability.</li>
+            </ul>
+
+            <h3>✅ Quick Recap</h3>
+            <ul>
+                <li>Databases store and organize data efficiently.</li>
+                <li>SQL databases → structured data & relationships.</li>
+                <li>NoSQL databases → flexibility & scalability.</li>
+                <li>Design matters: normalization, indexing, keys.</li>
+                <li>Security, performance, and reliability are core pillars.</li>
+            </ul>
+
+        </div>
+    </div>
+</body>
+
+</html>
