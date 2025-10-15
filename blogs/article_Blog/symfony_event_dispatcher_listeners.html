@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buya's Blog - Symfony Event Dispatcher & Listeners Explained with KYC Approval</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"
+        integrity="sha256-46qynGAkLSFpVbEBog43gvNhfrOj+BmwXdxFgVK/Kvc=" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,700|Roboto+Slab:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../blogs.css">
+</head>
+
+<body>
+    <ul class="sticky" id="mainMenu">
+        <li class="mainMenuList"><a href="../../index.html">Home</a></li>
+        <li class="mainMenuList"><a href="../../index.html#project">Project</a></li>
+        <li class="mainMenuList"><a href="../../index.html#class">Online class</a></li>
+        <li class="mainMenuList"><a href="../../index.html#competition">Competition</a></li>
+        <li class="mainMenuList"><a href="../../index.html#about">About me</a></li>
+        <li class="mainMenuList"><a href="../blogs.html">Blog</a></li>
+    </ul>
+
+    <div class="container">
+        <div class="blog_section blog-post">
+            <div class="blog-post-header">
+                <img src="../../img/myAvatar1.png" alt="Author avatar" class="blog-avatar">
+                <div>
+                    <h1 class="blog-title">⚙️ Understanding Symfony Event Dispatcher & Listeners: A Practical Example with KYC Approval</h1>
+                    <div class="blog-meta">By Buya &bull; <span>October 2025</span></div>
+                </div>
+            </div>
+
+            <p><strong>Symfony’s Event Dispatcher</strong> component allows you to decouple your application logic.  
+            Instead of calling functions directly, you dispatch events and let listeners respond — making your code more flexible, testable, and modular.</p>
+
+            <p>In this blog, we’ll explore a real-world example from an approval flow.</p>
+
+            <h3>1. What is an Event?</h3>
+            <p>An <strong>event</strong> is an object that represents something that happened in your system.</p>
+
+<pre><code>class KYCApprovedEvent
+{
+    private Kyc $kyc;
+    private User $adminUser;
+    private int $approvalAmount;
+    private int $maxAmount;
+
+    public function __construct(Kyc $kyc, User $adminUser, int $approvalAmount, int $maxAmount)
+    {
+        $this-&gt;kyc = $kyc;
+        $this-&gt;adminUser = $adminUser;
+        $this-&gt;approvalAmount = $approvalAmount;
+        $this-&gt;maxAmount = $maxAmount;
+    }
+
+    public function getKyc(): Kyc { return $this-&gt;kyc; }
+    public function getAdminUser(): User { return $this-&gt;adminUser; }
+    public function getApprovalAmount(): int { return $this-&gt;approvalAmount; }
+    public function getMaxAmount(): int { return $this-&gt;maxAmount; }
+}
+</code></pre>
+
+            <p>Here, <code>KYCApprovedEvent</code> represents a successful KYC approval.  
+            It carries all necessary data for other parts of the system to react to this event.</p>
+
+            <h3>2. Dispatching an Event</h3>
+            <p>In your controller, you can dispatch the event like this:</p>
+
+<pre><code>$this-&gt;eventDispatcher-&gt;dispatch(
+    new KYCApprovedEvent($kyc, $adminUser, $approvalAmount, $maxAmount),
+    KYCApprovedEvent::NAME
+);
+</code></pre>
+
+            <p><strong>dispatch()</strong> triggers the event.  
+            Other services listening to <code>KYCApprovedEvent::NAME</code> will automatically respond.</p>
+
+            <p>This keeps your controller clean — it only focuses on <em>what happened</em>, not <em>who reacts</em>.</p>
+
+            <h3>3. Listening to an Event</h3>
+            <p>Now let’s create a listener class:</p>
+
+<pre><code>public function onKYCApprovedEvent(KYCApprovedEvent $event)
+{
+    try {
+        $user = $event-&gt;getKyc()-&gt;getUser();
+        $adminUser = $event-&gt;getAdminUser();
+        $maxAmount = $event-&gt;getMaxAmount();
+        $approvalAmount = $event-&gt;getApprovalAmount();
+
+        $this-&gt;contractService-&gt;process(['userUuid' =&gt; $user-&gt;getUuid()]);
+
+        if ($maxAmount !== $approvalAmount) {
+            $this-&gt;whitelistService-&gt;productAssignFromWhitelist($user, $approvalAmount);
+        }
+
+        $this-&gt;userMetas-&gt;setUserStatusWithMeta($user, UserMetaData::ID_KYC_APPROVED);
+    } catch (\Throwable $e) {
+        $this-&gt;logger-&gt;error("adminUserId: {$adminUser-&gt;getId()}, exceptionMessage: {$e-&gt;getMessage()}");
+    }
+}
+</code></pre>
+
+            <h4>Key Points:</h4>
+            <ul>
+                <li><strong>Data Access:</strong> The listener accesses data through the event object (e.g. <code>$event-&gt;getMaxAmount()</code>).</li>
+                <li><strong>Service Injection:</strong> All required services (<code>contractService</code>, <code>whitelistService</code>, <code>userMetas</code>) are injected via the constructor.</li>
+                <li><strong>Error Handling:</strong> Logs errors instead of breaking the system.</li>
+            </ul>
+
+            <h3>4. Registering the Listener</h3>
+            <p>In Symfony 4+, you can use <strong>autoconfiguration</strong> to register listeners easily:</p>
+
+<pre><code># config/services.yaml
+App\EventListener\KYCApprovedListener:
+    tags:
+        - { name: 'kernel.event_listener', event: 'kyc.approved', method: 'onKYCApprovedEvent' }
+</code></pre>
+
+            <ul>
+                <li><code>event:</code> The name of the event to listen to.</li>
+                <li><code>method:</code> The method called when the event is dispatched.</li>
+            </ul>
+
+            <p>Symfony will automatically call <code>onKYCApprovedEvent()</code> whenever the event is fired.</p>
+
+            <h3>5. Advantages of Using Events</h3>
+            <ul>
+                <li><strong>Decoupling:</strong> Controllers don’t need to know who reacts to an event.</li>
+                <li><strong>Reusability:</strong> Multiple listeners can respond to the same event.</li>
+                <li><strong>Scalability:</strong> Add new features without modifying existing code.</li>
+                <li><strong>Testability:</strong> Listeners can be tested independently.</li>
+            </ul>
+
+            <h3>✅ Quick Recap</h3>
+            <ul>
+                <li>Define an <strong>Event</strong> class to represent something that happened.</li>
+                <li><strong>Dispatch</strong> it from controllers or services.</li>
+                <li>Create <strong>Listeners</strong> to handle the event logic.</li>
+                <li>Register the listener in <code>services.yaml</code>.</li>
+            </ul>
+        </div>
+    </div>
+</body>
+
+</html>

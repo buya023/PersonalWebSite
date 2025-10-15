@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buya's Blog - Guzzle: A Powerful PHP HTTP Client</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"
+        integrity="sha256-46qynGAkLSFpVbEBog43gvNhfrOj+BmwXdxFgVK/Kvc=" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,700|Roboto+Slab:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../blogs.css">
+</head>
+
+<body>
+    <ul class="sticky" id="mainMenu">
+        <li class="mainMenuList"><a href="../../index.html">Home</a></li>
+        <li class="mainMenuList"><a href="../../index.html#project">Project</a></li>
+        <li class="mainMenuList"><a href="../../index.html#class">Online class</a></li>
+        <li class="mainMenuList"><a href="../../index.html#competition">Competition</a></li>
+        <li class="mainMenuList"><a href="../../index.html#about">About me</a></li>
+        <li class="mainMenuList"><a href="../blogs.html">Blog</a></li>
+    </ul>
+
+    <div class="container">
+        <div class="blog_section blog-post">
+            <div class="blog-post-header">
+                <img src="../../img/myAvatar1.png" alt="Author avatar" class="blog-avatar">
+                <div>
+                    <h1 class="blog-title">🌐 Guzzle: A Powerful PHP HTTP Client</h1>
+                    <div class="blog-meta">By Buya &bull; <span>October 2025</span></div>
+                </div>
+            </div>
+
+            <p><strong>Guzzle</strong> is the most popular HTTP client for PHP.  
+            It allows you to send HTTP requests and receive responses from external web services in a structured, object-oriented, and predictable way.</p>
+
+            <p>With Guzzle, you can easily:</p>
+            <ul>
+                <li>Send <strong>GET</strong>, <strong>POST</strong>, <strong>PUT</strong>, or <strong>DELETE</strong> requests.</li>
+                <li>Work with <strong>JSON</strong>, <strong>XML</strong>, or plain text responses.</li>
+                <li>Handle redirects, headers, cookies, and query parameters.</li>
+                <li>Authenticate requests using <strong>Bearer tokens</strong> or <strong>OAuth</strong>.</li>
+                <li>Mock responses for unit testing — without hitting real endpoints.</li>
+            </ul>
+
+            <h3>1. Installing Guzzle</h3>
+            <p>Install Guzzle via Composer:</p>
+
+<pre><code>composer require guzzlehttp/guzzle
+</code></pre>
+
+            <p>This adds the Guzzle library to your project and lets you start making HTTP requests easily.</p>
+
+            <h3>2. Initializing the Client</h3>
+
+<pre><code>$client = new Client([
+    'base_uri' =&gt; $this-&gt;host,
+    'timeout'  =&gt; 10,
+]);
+</code></pre>
+
+            <ul>
+                <li><code>base_uri</code>: Base URL of your backend API.</li>
+                <li><code>timeout</code>: Maximum seconds to wait for a response.</li>
+            </ul>
+
+            <h3>3. Sending JSON Data</h3>
+
+<pre><code>$request = $request
+    -&gt;withHeader('Authorization', 'Bearer ' . $this-&gt;accessToken-&gt;getToken())
+    -&gt;withHeader('Content-Type', 'application/json');
+
+$response = $client-&gt;send($request);
+</code></pre>
+
+            <ul>
+                <li>Automatically adds <code>Authorization</code> and <code>Content-Type</code> headers.</li>
+                <li><code>send()</code> executes the request and returns a Guzzle response object.</li>
+            </ul>
+
+            <h3>4. Handling File Uploads</h3>
+
+<pre><code>$option['multipart'][] = [
+    'name' =&gt; 'inputFile',
+    'contents' =&gt; fopen($file-&gt;getRealPath(), 'r'),
+    'filename' =&gt; $file-&gt;getClientOriginalName(),
+    'headers' =&gt; ['Content-Type' =&gt; $file-&gt;getMimeType()],
+];
+
+$response = $client-&gt;request('POST', $request-&gt;getUrl($this-&gt;host), $option);
+</code></pre>
+
+            <p>When uploading files, Guzzle automatically handles <code>multipart/form-data</code> requests,  
+            allowing you to mix file uploads and regular form fields.</p>
+
+            <h3>5. Processing Responses</h3>
+
+<pre><code>$status = $response-&gt;getStatusCode();
+$body = (string) $response-&gt;getBody();
+$data = json_decode($body, true);
+</code></pre>
+
+            <ul>
+                <li><code>getStatusCode()</code>: HTTP status (e.g. 200, 404, 500).</li>
+                <li><code>getBody()</code>: Raw response body.</li>
+                <li><code>json_decode()</code>: Converts JSON into PHP arrays.</li>
+            </ul>
+
+            <h3>6. Exception Handling</h3>
+
+<pre><code>try {
+    $response = $client-&gt;send($request);
+} catch (ClientException $ex) {
+    // 4xx errors
+} catch (ServerException $ex) {
+    // 5xx errors
+} catch (RequestException $ex) {
+    // Network or timeout errors
+}
+</code></pre>
+
+            <p>Guzzle wraps all request errors into structured exceptions.  
+            For example, a <code>cURL error 28</code> (timeout) will be caught as a <code>RequestException</code>.</p>
+
+            <h3>7. Why Guzzle Is Better Than Raw cURL</h3>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Guzzle</th>
+                        <th>Raw cURL</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Object-oriented</td>
+                        <td>✅ PSR-7 support</td>
+                        <td>❌ Procedural only</td>
+                    </tr>
+                    <tr>
+                        <td>JSON &amp; Multipart handling</td>
+                        <td>✅ Automatic</td>
+                        <td>❌ Manual setup</td>
+                    </tr>
+                    <tr>
+                        <td>Error handling</td>
+                        <td>✅ Exceptions for 4xx, 5xx, network</td>
+                        <td>❌ Return codes only</td>
+                    </tr>
+                    <tr>
+                        <td>Testability</td>
+                        <td>✅ Mock responses easily</td>
+                        <td>❌ Hard to test</td>
+                    </tr>
+                    <tr>
+                        <td>Authentication</td>
+                        <td>✅ Built-in methods</td>
+                        <td>❌ Manual configuration</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>✅ Summary</h3>
+            <ul>
+                <li><strong>Guzzle</strong> simplifies HTTP communication in PHP.</li>
+                <li>Supports clean, reusable, and testable request handling.</li>
+                <li>Integrates smoothly with modern frameworks like Symfony and Laravel.</li>
+                <li>Ideal for APIs, file uploads, and secure data transfers.</li>
+            </ul>
+
+            <p>In your <strong>KYC approval flow</strong>, Guzzle ensures reliable backend-to-backend communication:</p>
+            <ul>
+                <li>Sends approval requests with JSON payloads.</li>
+                <li>Authenticates using Bearer tokens.</li>
+                <li>Handles file uploads and timeouts gracefully.</li>
+                <li>Processes and parses JSON responses efficiently.</li>
+            </ul>
+        </div>
+    </div>
+</body>
+
+</html>
