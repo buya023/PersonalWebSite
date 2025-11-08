@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buya's Blog - Understanding Amazon S3 and Getting Images from S3 Buckets</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"
+    integrity="sha256-46qynGAkLSFpVbEBog43gvNhfrOj+BmwXdxFgVK/Kvc=" crossorigin="anonymous" />
+  <link href="https://fonts.googleapis.com/css?family=Lora:400,700|Roboto+Slab:400,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../../css/style.css">
+  <link rel="stylesheet" href="../blogs.css">
+</head>
+
+<body>
+  <ul class="sticky" id="mainMenu">
+    <li class="mainMenuList"><a href="../../index.html">Home</a></li>
+    <li class="mainMenuList"><a href="../../index.html#project">Project</a></li>
+    <li class="mainMenuList"><a href="../../index.html#class">Online class</a></li>
+    <li class="mainMenuList"><a href="../../index.html#competition">Competition</a></li>
+    <li class="mainMenuList"><a href="../../index.html#about">About me</a></li>
+    <li class="mainMenuList"><a href="../blogs.html">Blog</a></li>
+  </ul>
+
+  <div class="container">
+    <div class="blog_section blog-post">
+      <div class="blog-post-header">
+        <img src="../../img/myAvatar1.png" alt="Author avatar" class="blog-avatar">
+        <div>
+          <h1 class="blog-title">☁️ Understanding Amazon S3 and How to Get Images from Buckets</h1>
+          <div class="blog-meta">By Buya &bull; <span>November 2025</span></div>
+        </div>
+      </div>
+
+      <h3>🧭 What is Amazon S3?</h3>
+      <p><strong>Amazon Simple Storage Service (S3)</strong> is a cloud-based object storage service provided by
+        <strong>AWS (Amazon Web Services)</strong>. It’s designed to store and retrieve any amount of data — from images,
+        videos, backups, to entire websites — at any time, from anywhere.
+      </p>
+      <p>Think of it as your own secure, scalable cloud hard drive where you can upload, store, and access files using the
+        internet.</p>
+
+      <h3>🧱 How Amazon S3 Works</h3>
+      <p>S3 organizes files into <strong>buckets</strong>. A bucket is like a folder at the top level of your S3 storage.
+        Inside a bucket, you can have many <strong>objects</strong> (files), each identified by a unique
+        <strong>key</strong> (the file name or path).</p>
+
+      <pre><code>Bucket: my-app-assets
+ ├── images/
+ │    ├── logo.png
+ │    ├── profile.jpg
+ └── uploads/
+      ├── user1-photo.png
+      └── user2-photo.png
+</code></pre>
+
+      <p>Each object in S3 has:</p>
+      <ul>
+        <li>A <strong>bucket name</strong></li>
+        <li>A <strong>key</strong> (path + filename)</li>
+        <li>Optional <strong>metadata</strong></li>
+        <li>The <strong>object data</strong> (file content itself)</li>
+      </ul>
+
+      <h3>🔐 S3 Access: Public vs. Private</h3>
+      <p>By default, S3 objects are <strong>private</strong>, meaning no one can access them directly from a URL. You have
+        two main ways to make them available:</p>
+      <ul>
+        <li><strong>Public access</strong> — make your bucket or specific files publicly readable.</li>
+        <li><strong>Pre-signed URLs</strong> — generate temporary, secure URLs that allow limited access.</li>
+      </ul>
+
+      <h3>🪣 Uploading Files to S3</h3>
+      <p>You can upload files through:</p>
+      <ul>
+        <li>The <strong>AWS Management Console</strong> (drag and drop)</li>
+        <li>The <strong>AWS CLI</strong></li>
+        <li>Programmatically via the <strong>AWS SDK</strong> (for JavaScript, Python, etc.)</li>
+      </ul>
+
+      <p>Here’s an example using the AWS Management Console:</p>
+      <ol>
+        <li>Go to <a href="https://s3.console.aws.amazon.com/" target="_blank">https://s3.console.aws.amazon.com/</a></li>
+        <li>Click <strong>Create bucket</strong> and name it (e.g., <code>my-image-bucket</code>).</li>
+        <li>Choose a region (e.g., <code>us-east-1</code>).</li>
+        <li>Uncheck “Block all public access” if you want to serve images publicly.</li>
+        <li>Upload images using the <strong>Upload</strong> button.</li>
+      </ol>
+
+      <h3>🧾 Getting Images from S3</h3>
+      <p>Now, let’s go step-by-step on how to get an image from an S3 bucket programmatically.</p>
+
+      <h4>⚙️ Get Image Using AWS SDK (Node.js Example)</h4>
+      <p>If your bucket is private, you can use <strong>AWS SDK for JavaScript</strong> to fetch images securely.</p>
+
+      <pre><code>npm install @aws-sdk/client-s3
+</code></pre>
+
+      <p>Then use code like this:</p>
+
+      <pre><code>import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+
+const s3 = new S3Client({
+  region: "us-east-1",
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
+  }
+});
+
+// Generate a pre-signed URL for an image
+async function getImageUrl() {
+  const command = new GetObjectCommand({
+    Bucket: "my-image-bucket",
+    Key: "images/profile.jpg"
+  });
+
+  const url = await getSignedUrl(s3, command, { expiresIn: 3600 }); // 1 hour
+  console.log("Pre-signed URL:", url);
+}
+
+getImageUrl();
+</code></pre>
+
+      <p>This will output a secure, temporary URL you can use in your app to fetch the image:</p>
+
+      <pre><code>&lt;img src="https://example-signed-url.amazonaws.com" alt="Profile Image" /&gt;
+</code></pre>
+
+      <h3>🧭 Summary</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Concept</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Amazon S3</strong></td>
+            <td>A cloud storage service by AWS for storing and retrieving files.</td>
+          </tr>
+          <tr>
+            <td><strong>Bucket</strong></td>
+            <td>A container for your stored objects (files).</td>
+          </tr>
+          <tr>
+            <td><strong>Object Key</strong></td>
+            <td>The file path/name inside a bucket.</td>
+          </tr>
+          <tr>
+            <td><strong>Public Access</strong></td>
+            <td>Anyone can view the file using its URL.</td>
+          </tr>
+          <tr>
+            <td><strong>Pre-signed URL</strong></td>
+            <td>A temporary secure URL to access private files.</td>
+          </tr>
+          <tr>
+            <td><strong>SDK Access</strong></td>
+            <td>Programmatic access via AWS SDK (N

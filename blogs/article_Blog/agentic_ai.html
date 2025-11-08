@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Buya's Blog - Agentic AI: What it is, ML Engineer Role, and Reflection</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"
+        integrity="sha256-46qynGAkLSFpVbEBog43gvNhfrOj+BmwXdxFgVK/Kvc=" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,700|Roboto+Slab:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../blogs.css">
+</head>
+
+<body>
+    <ul class="sticky" id="mainMenu">
+        <li class="mainMenuList"><a href="../../index.html">Home</a></li>
+        <li class="mainMenuList"><a href="../../index.html#project">Project</a></li>
+        <li class="mainMenuList"><a href="../../index.html#class">Online class</a></li>
+        <li class="mainMenuList"><a href="../../index.html#competition">Competition</a></li>
+        <li class="mainMenuList"><a href="../../index.html#about">About me</a></li>
+        <li class="mainMenuList"><a href="../blogs.html">Blog</a></li>
+    </ul>
+
+    <div class="container">
+        <div class="blog_section blog-post">
+            <div class="blog-post-header">
+                <img src="../../img/myAvatar1.png" alt="Author avatar" class="blog-avatar">
+                <div>
+                    <h1 class="blog-title">🤖 Agentic AI: What It Is, What ML Engineers Do, and Why Reflection Matters
+                    </h1>
+                    <div class="blog-meta">By Buya &bull; <span>October 2025</span></div>
+                </div>
+            </div>
+
+            <p><strong>Agentic AI</strong> is the next stage of AI: systems that don’t only answer prompts, but can
+                <em>plan,
+                    act, observe, and improve</em> over time. In this post we’ll explain what Agentic AI means, what
+                machine
+                learning engineers need to build these systems, and why adding <strong>reflection</strong> is a
+                game-changer.
+            </p>
+
+            <h3>🤖 What Is Agentic AI?</h3>
+            <p><strong>Agentic AI</strong> refers to AI systems that can <strong>plan, act, and reflect</strong> — not
+                just
+                generate text or follow commands. Unlike a traditional chatbot that only reacts to your prompts, an
+                agentic AI
+                can:</p>
+            <ul>
+                <li>Understand your goal.</li>
+                <li>Break it down into steps.</li>
+                <li>Take actions using tools or APIs.</li>
+                <li>Observe the results.</li>
+                <li>Reflect on what worked or failed.</li>
+                <li>Adjust its strategy automatically.</li>
+            </ul>
+
+            <p><strong>In short:</strong> Agentic AI doesn’t just respond — it thinks, acts, and learns.</p>
+
+            <h3>🧩 Example</h3>
+            <p>Say you tell an agent:</p>
+            <blockquote>“Help me launch a marketing campaign for my app.”</blockquote>
+            <p>A traditional AI might only give ideas. An agentic AI could:</p>
+            <ul>
+                <li>Research your target audience,</li>
+                <li>Create social posts,</li>
+                <li>Design ad copy,</li>
+                <li>Track engagement results, and</li>
+                <li>Iterate to improve them automatically.</li>
+            </ul>
+            <p>It acts like a digital teammate — not just a tool.</p>
+
+            <h3>🧰 What Machine Learning Engineers Need to Do for Agentic AI</h3>
+            <p>Building Agentic AI systems requires a broader skill set than training isolated models. Below are the
+                core
+                responsibilities and technical areas ML engineers should focus on.</p>
+
+            <h4>1. Integrate Models with Tools</h4>
+            <p>Agentic AI needs access to external systems (APIs, databases, apps) so it can act in the world. ML
+                engineers
+                design safe, robust tool-use architectures that let a language model:</p>
+            <ul>
+                <li>Query APIs,</li>
+                <li>Run code,</li>
+                <li>Call functions,</li>
+                <li>Read/write databases.</li>
+            </ul>
+            <p><em>Example:</em> Using LangChain or OpenAI function-calling to let an LLM “use” tools while maintaining
+                safety
+                checks and audit logs.</p>
+
+            <h4>2. Implement Memory Systems</h4>
+            <p>Agents need both short-term and long-term memory to recall interactions and learn over time. As an ML
+                engineer you’ll design:</p>
+            <ul>
+                <li><strong>Short-term memory</strong> — context windows or conversation history that drive current
+                    decision
+                    making;</li>
+                <li><strong>Long-term memory</strong> — vector databases, embeddings, or persistent stores that hold
+                    past
+                    experiences, successful strategies, and user preferences.</li>
+            </ul>
+            <p>Without memory, an agent is just a smart goldfish 🐠 — it can’t build on past experience.</p>
+
+            <h4>3. Enable Planning & Task Decomposition</h4>
+            <p>Agents must break goals into manageable sub-tasks and prioritize steps. ML engineers implement:</p>
+            <ul>
+                <li>Task decomposition algorithms that split big goals;</li>
+                <li>Planners that select and order sub-tasks;</li>
+                <li>Control loops that execute, evaluate results, and continue until the goal is met.</li>
+            </ul>
+            <p>This mixes LLM reasoning with structured logic and orchestration code.</p>
+
+            <h4>4. Add Reflection Loops</h4>
+            <p>The most powerful improvement to agentic behavior is <strong>reflection</strong>. Reflection lets an
+                agent
+                evaluate its own outputs and improve without retraining the base model.</p>
+
+            <h5>🪞 What Is Reflection?</h5>
+            <p>Reflection is the agent’s internal feedback process: it examines what it did, checks outcomes, identifies
+                errors
+                or gaps, and updates future behavior. Examples:</p>
+            <ul>
+                <li>Agent writes code &rarr; runs it &rarr; sees an error &rarr; re-analyzes and rewrites the code.</li>
+                <li>Agent writes a summary &rarr; compares to reference &rarr; identifies missing points &rarr; revises
+                    the
+                    summary.</li>
+            </ul>
+            <p>Reflection loops can be designed using:</p>
+            <ul>
+                <li><strong>Meta-prompting:</strong> Ask the agent to review its own reasoning or plan;</li>
+                <li><strong>Self-critique models:</strong> Use a second LLM to evaluate the first model’s output;</li>
+                <li><strong>Experience storage:</strong> Save success/failure cases so the agent learns heuristics over
+                    time.</li>
+            </ul>
+
+            <h4>5. Ensure Safety & Control</h4>
+            <p>Autonomy raises risk. ML engineers must enforce boundaries so agents act safely:</p>
+            <ul>
+                <li>Define safe action sets and policies,</li>
+                <li>Implement sandboxing and rate limits for external calls,</li>
+                <li>Log every action for auditing,</li>
+                <li>Provide human-in-the-loop overrides and kill switches.</li>
+            </ul>
+            <p>Designing robust governance is as important as building the agent itself.</p>
+
+            <h3>🔍 Reflection in Practice: A Concrete Example</h3>
+            <p>Goal: generate a financial report.</p>
+            <ol>
+                <li><strong>Plan</strong>: Agent decides to gather data → analyze → write summary.</li>
+                <li><strong>Act</strong>: Pulls data and writes the report.</li>
+                <li><strong>Reflect</strong>: Checks if the data was complete and conclusions are sound.</li>
+                <li><strong>Adjust</strong>: If issues are found, it revises and reruns steps.</li>
+            </ol>
+            <p>That reflection makes the system iteratively better — much like human learning from mistakes.</p>
+
+            <h3>🚀 Why Reflection Is the Key to True Intelligence</h3>
+            <p>Reflection transforms static reasoning into <strong>adaptive learning</strong>:</p>
+            <ul>
+                <li>It lets the agent improve without full retraining of the base model.</li>
+                <li>It enables continual learning from outcomes and experience.</li>
+                <li>It moves an agent from “script runner” to “self-improving decision-maker.”</li>
+            </ul>
+
+            <h3>🧭 The Future for ML Engineers</h3>
+            <p>Agentic AI shifts the ML engineer role from pure model training to designing intelligent systems:</p>
+            <ul>
+                <li>You’ll combine prompt engineering, systems design, memory architecture, and safety engineering.</li>
+                <li>Designing planners, reflection mechanics, and tool integrations becomes core work.</li>
+                <li>Think in terms of <em>AI architecture</em> rather than only model performance metrics.</li>
+            </ul>
+
+            <h3>⚙️ Summary</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Concept</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Agentic AI</strong></td>
+                        <td>AI that can act autonomously toward goals (plan, act, observe, reflect).</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Key Components</strong></td>
+                        <td>Memory, planning, reasoning, reflection, and tool use.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>ML Engineer’s Role</strong></td>
+                        <td>Integrate tools, build memory, design planners, add reflection loops, and ensure safety.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Reflection</strong></td>
+                        <td>The AI’s self-evaluation process to troubleshoot and improve its own actions/outcomes.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>🧩 Final Thought</h3>
+            <p>Agentic AI is not just about smarter responses — it’s about building systems that <em>learn to think
+                    about their
+                    thinking</em>. For ML engineers, that means designing systems that blend models with memory,
+                planning,
+                reflection, and safety. The result: AI that can truly collaborate with humans, adapt over time, and
+                deliver
+                higher-value outcomes.</p>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buya's Blog - Understanding Heap and heapq in Python</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"
+        integrity="sha256-46qynGAkLSFpVbEBog43gvNhfrOj+BmwXdxFgVK/Kvc=" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,700|Roboto+Slab:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../blogs.css">
+</head>
+
+<body>
+    <ul class="sticky" id="mainMenu">
+        <li class="mainMenuList"><a href="../../index.html">Home</a></li>
+        <li class="mainMenuList"><a href="../../index.html#project">Project</a></li>
+        <li class="mainMenuList"><a href="../../index.html#class">Online class</a></li>
+        <li class="mainMenuList"><a href="../../index.html#competition">Competition</a></li>
+        <li class="mainMenuList"><a href="../../index.html#about">About me</a></li>
+        <li class="mainMenuList"><a href="../blogs.html">Blog</a></li>
+    </ul>
+
+    <div class="container">
+        <div class="blog_section blog-post">
+            <div class="blog-post-header">
+                <img src="../../img/myAvatar1.png" alt="Author avatar" class="blog-avatar">
+                <div>
+                    <h1 class="blog-title">⚙️ Understanding Heap and <code>heapq</code> in Python</h1>
+                    <div class="blog-meta">By Buya &bull; <span>November 2025</span></div>
+                </div>
+            </div>
+
+            <p>When dealing with <strong>priority-based data</strong>, such as always needing the smallest or largest
+                element quickly,
+                a <strong>heap</strong> is one of the most useful data structures. Python provides a built-in module
+                called
+                <code>heapq</code> that makes working with heaps both simple and efficient.
+            </p>
+
+            <h3>🧠 What is a Heap?</h3>
+            <p>A <strong>heap</strong> is a special kind of binary tree that satisfies the <strong>heap
+                    property</strong>:</p>
+            <ul>
+                <li><strong>Min-Heap:</strong> Each parent node is smaller than or equal to its children.</li>
+                <li><strong>Max-Heap:</strong> Each parent node is larger than or equal to its children.</li>
+            </ul>
+
+            <p>The heap structure allows for fast access to the smallest (or largest) element in
+                <strong>O(1)</strong> time, with insertion and removal operations in <strong>O(log n)</strong>.
+            </p>
+
+            <h4>🪜 Example of a Min-Heap</h4>
+            <pre><code>        1
+      /   \
+     3     5
+    / \   / \
+   4  8  6  9
+</code></pre>
+            <p>Here, the smallest element (<code>1</code>) is always at the root of the tree.</p>
+
+            <h3>🐍 The <code>heapq</code> Module</h3>
+            <p>Python’s <code>heapq</code> implements a <strong>min-heap</strong> using a regular list.
+                The smallest element is always at index <code>0</code>.</p>
+
+            <h3>🔹 Basic Operations</h3>
+
+            <h4>1. Create a Heap</h4>
+            <pre><code>import heapq
+
+nums = [5, 3, 8, 1, 2]
+heapq.heapify(nums)
+print(nums)  # [1, 2, 8, 5, 3]
+</code></pre>
+            <p><code>heapify()</code> rearranges the list <strong>in place</strong> so it satisfies the heap property.
+            </p>
+
+            <h4>2. Push Elements</h4>
+            <pre><code>heapq.heappush(nums, 0)
+print(nums)  # [0, 1, 8, 5, 3, 2]
+</code></pre>
+            <p><code>heappush()</code> adds a new element while maintaining heap order.</p>
+
+            <h4>3. Pop the Smallest Element</h4>
+            <pre><code>smallest = heapq.heappop(nums)
+print(smallest)  # 0
+print(nums)      # [1, 3, 8, 5, 2]
+</code></pre>
+
+            <h4>4. Peek at the Smallest Element</h4>
+            <pre><code>print(nums[0])  # 1
+</code></pre>
+
+            <h4>5. Push and Pop Together</h4>
+            <pre><code>x = heapq.heappushpop(nums, 4)
+print(x)      # smallest element removed
+print(nums)   # heap remains valid
+</code></pre>
+
+            <h3>🧮 Finding Top or Bottom N Elements</h3>
+            <pre><code>nums = [12, 3, 5, 7, 19, 1]
+print(heapq.nlargest(3, nums))   # [19, 12, 7]
+print(heapq.nsmallest(3, nums))  # [1, 3, 5]
+</code></pre>
+
+            <p>These methods are great for ranking systems, leaderboards, or top-k problems.</p>
+
+            <h3>🔁 Max-Heap Trick</h3>
+            <p>Since <code>heapq</code> only supports min-heaps, you can simulate a max-heap by negating values:</p>
+            <pre><code>nums = [5, 3, 8, 1, 2]
+max_heap = [-n for n in nums]
+heapq.heapify(max_heap)
+
+max_val = -heapq.heappop(max_heap)
+print(max_val)  # 8
+</code></pre>
+
+            <h3>🧩 Real-World Examples</h3>
+
+            <h4>1. Merging Sorted Lists</h4>
+            <pre><code>import heapq
+
+lists = [
+  [1, 4, 7],
+  [2, 5, 8],
+  [3, 6, 9]
+]
+
+merged = list(heapq.merge(*lists))
+print(merged)  # [1, 2, 3, 4, 5, 6, 7, 8, 9]
+</code></pre>
+
+            <h4>2. K Smallest Pair Sums</h4>
+            <pre><code>import heapq
+
+nums1 = [1, 7, 11]
+nums2 = [2, 4, 6]
+k = 3
+
+heap = []
+for i in range(len(nums1)):
+    heapq.heappush(heap, (nums1[i] + nums2[0], i, 0))
+
+res = []
+while heap and len(res) < k:
+    s, i, j = heapq.heappop(heap)
+    res.append([nums1[i], nums2[j]])
+    if j + 1 < len(nums2):
+        heapq.heappush(heap, (nums1[i] + nums2[j+1], i, j+1))
+
+print(res)  # [[1, 2], [1, 4], [1, 6]]
+</code></pre>
+
+            <h3>⚡ Time Complexity</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Operation</th>
+                        <th>Complexity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>heapify()</code></td>
+                        <td>O(n)</td>
+                    </tr>
+                    <tr>
+                        <td><code>heappush()</code></td>
+                        <td>O(log n)</td>
+                    </tr>
+                    <tr>
+                        <td><code>heappop()</code></td>
+                        <td>O(log n)</td>
+                    </tr>
+                    <tr>
+                        <td><code>nlargest()</code> / <code>nsmallest()</code></td>
+                        <td>O(n log k)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>✅ Summary</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Concept</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Heap</td>
+                        <td>Binary tree where parent ≤ children (min-heap)</td>
+                    </tr>
+                    <tr>
+                        <td><code>heapq</code></td>
+                        <td>Python module for heap operations</td>
+                    </tr>
+                    <tr>
+                        <td>Default Type</td>
+                        <td>Min-heap</td>
+                    </tr>
+                    <tr>
+                        <td>Main Functions</td>
+                        <td><code>heapify</code>, <code>heappush</code>, <code>heappop</code>, <code>nlargest</code>,
+                            <code>nsmallest</code></td>
+                    </tr>
+                    <tr>
+                        <td>Max-heap</td>
+                        <td>Use negative values</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>🚀 Why Heaps are Essential</h3>
+            <ul>
+                <li><strong>Efficient:</strong> Retrieve smallest/largest values fast.</li>
+                <li><strong>Flexible:</strong> Great for scheduling, priority queues, or ranking.</li>
+                <li><strong>Common in Algorithms:</strong> Used in Dijkstra’s algorithm, top-K problems, and task
+                    scheduling.</li>
+            </ul>
+
+            <p>Heaps and <code>heapq</code> are must-know tools for every Python developer working with data structures
+                or algorithms.</p>
+        </div>
+    </div>
+</body>
+
+</html>

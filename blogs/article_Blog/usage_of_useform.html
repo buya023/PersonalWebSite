@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buya's Blog - Understanding formState & useForm in React Hook Form</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"
+        integrity="sha256-46qynGAkLSFpVbEBog43gvNhfrOj+BmwXdxFgVK/Kvc=" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,700|Roboto+Slab:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../blogs.css">
+</head>
+
+<body>
+    <ul class="sticky" id="mainMenu">
+        <li class="mainMenuList"><a href="../../index.html">Home</a></li>
+        <li class="mainMenuList"><a href="../../index.html#project">Project</a></li>
+        <li class="mainMenuList"><a href="../../index.html#class">Online class</a></li>
+        <li class="mainMenuList"><a href="../../index.html#competition">Competition</a></li>
+        <li class="mainMenuList"><a href="../../index.html#about">About me</a></li>
+        <li class="mainMenuList"><a href="../blogs.html">Blog</a></li>
+    </ul>
+
+    <div class="container">
+        <div class="blog_section blog-post">
+            <div class="blog-post-header">
+                <img src="../../img/myAvatar1.png" alt="Author avatar" class="blog-avatar">
+                <div>
+                    <h1 class="blog-title">🧾 Understanding <code>useForm</code> & <code>formState</code> in React Hook
+                        Form</h1>
+                    <div class="blog-meta">By Buya &bull; <span>October 2025</span></div>
+                </div>
+            </div>
+
+            <p><strong>React Hook Form</strong> is one of the most efficient libraries for managing form state in React.
+                Its core hook,
+                <code>useForm()</code>, gives you complete control over your form's behavior, validation, and submission
+                — all
+                while minimizing re-renders.
+            </p>
+
+            <h3>🌱 What is <code>useForm()</code>?</h3>
+            <p><code>useForm()</code> is the entry point of React Hook Form. It creates a form instance that manages:
+            </p>
+            <ul>
+                <li>Form state (<code>isDirty</code>, <code>isValid</code>, <code>isSubmitting</code>, etc.)</li>
+                <li>Input registration and validation</li>
+                <li>Submission handling</li>
+                <li>Resetting and setting field values</li>
+                <li>Watching field changes</li>
+            </ul>
+
+            <p>You call it once per form and use the returned methods to control everything about that form.</p>
+
+            <h3>🧩 Basic Syntax</h3>
+            <pre><code>import { useForm } from "react-hook-form";
+
+function MyForm() {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    reset,
+    setValue,
+    getValues,
+    formState: { errors, isDirty, isSubmitting, isValid },
+  } = useForm();
+
+  const onSubmit = (data) => {
+    console.log("Form Data:", data);
+  };
+
+  return (
+    &lt;form onSubmit={handleSubmit(onSubmit)}&gt;
+      &lt;input {...register("username", { required: "Username is required" })} /&gt;
+      {errors.username &amp;&amp; &lt;p&gt;{errors.username.message}&lt;/p&gt;}
+
+      &lt;button disabled={!isValid || isSubmitting}&gt;Submit&lt;/button&gt;
+    &lt;/form&gt;
+  );
+}
+</code></pre>
+
+            <h3>🧠 How <code>useForm()</code> Works Internally</h3>
+            <p>When you call <code>useForm()</code>, React Hook Form does three key things:</p>
+            <ol>
+                <li>Creates a form context to track all registered inputs.</li>
+                <li>Registers inputs when you call <code>register()</code>, allowing RHF to track their values and
+                    validation rules.</li>
+                <li>Subscribes to updates via <code>formState</code> so you can react to validation or submission
+                    changes efficiently.</li>
+            </ol>
+            <p>Unlike traditional controlled components, RHF uses <strong>uncontrolled inputs</strong> by default — it
+                reads
+                values directly from the DOM, making it faster and causing fewer re-renders.</p>
+
+            <h3>🧰 The Full Power of <code>useForm()</code></h3>
+            <p>Let’s explore the key features it provides:</p>
+
+            <h4>1. <code>register(name, options)</code></h4>
+            <pre><code>&lt;input
+  {...register("email", {
+    required: "Email is required",
+    pattern: {
+      value: /^\S+@\S+$/i,
+      message: "Invalid email format",
+    },
+  })}
+/&gt;
+</code></pre>
+            <p>This connects the input to RHF, tracks its value, validates it, and exposes any errors in
+                <code>formState.errors</code>.
+            </p>
+
+            <h4>2. <code>handleSubmit(onSubmit, onError)</code></h4>
+            <pre><code>const onSubmit = (data) =&gt; console.log(data);
+const onError = (errors) =&gt; console.error(errors);
+
+&lt;form onSubmit={handleSubmit(onSubmit, onError)}&gt;&lt;/form&gt;
+</code></pre>
+            <p>It automatically prevents the default submit, validates fields, and calls either
+                <code>onSubmit</code> or <code>onError</code>.
+            </p>
+
+            <h4>3. <code>watch(name?)</code></h4>
+            <pre><code>const watchedEmail = watch("email");
+console.log("Email typed:", watchedEmail);
+</code></pre>
+            <p>Subscribes to field values in real-time — useful for conditional rendering or debugging. Calling without
+                a name
+                returns all form values.</p>
+
+            <h4>4. <code>formState</code></h4>
+            <pre><code>const {
+  errors,
+  isDirty,
+  isValid,
+  isSubmitting,
+  isSubmitted,
+  touchedFields,
+  dirtyFields,
+} = formState;
+</code></pre>
+            <p>Tracks everything about the form — from validation errors to whether the user has interacted with any
+                field.</p>
+
+            <ul>
+                <li>Disable submit until form is valid (<code>isValid</code>).</li>
+                <li>Show loader during submission (<code>isSubmitting</code>).</li>
+                <li>Indicate unsaved changes (<code>isDirty</code>).</li>
+            </ul>
+
+            <h4>5. <code>reset(values?, options?)</code></h4>
+            <pre><code>reset(); // resets all fields
+reset({ username: "Buya", email: "buya@example.com" }); // sets defaults
+</code></pre>
+
+            <h4>6. <code>setValue(name, value, options?)</code></h4>
+            <pre><code>setValue("email", "test@example.com", { shouldValidate: true });
+</code></pre>
+            <p>Sets a field value manually and can trigger validation or mark the field as dirty/touched.</p>
+
+            <h4>7. <code>getValues(name?)</code></h4>
+            <pre><code>const allValues = getValues(); // all fields
+const username = getValues("username"); // specific field
+</code></pre>
+
+            <h4>8. <code>trigger(name?)</code></h4>
+            <pre><code>await trigger("email"); // validate only email
+await trigger(); // validate all fields
+</code></pre>
+
+            <h3>⚙️ Configuration Options</h3>
+            <pre><code>const { register, handleSubmit } = useForm({
+  mode: "onChange",
+  reValidateMode: "onBlur",
+  defaultValues: { email: "", password: "" },
+  resolver: yupResolver(schema),
+});
+</code></pre>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Option</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>mode</code></td>
+                        <td>When to trigger validation (<code>onSubmit</code>, <code>onChange</code>,
+                            <code>onBlur</code>, <code>all</code>).
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><code>reValidateMode</code></td>
+                        <td>When to revalidate after an error.</td>
+                    </tr>
+                    <tr>
+                        <td><code>defaultValues</code></td>
+                        <td>Set initial form values.</td>
+                    </tr>
+                    <tr>
+                        <td><code>resolver</code></td>
+                        <td>Integrate with schema validation (Yup, Zod, Joi).</td>
+                    </tr>
+                    <tr>
+                        <td><code>shouldFocusError</code></td>
+                        <td>Auto-focus first invalid field on submit.</td>
+                    </tr>
+                    <tr>
+                        <td><code>criteriaMode</code></td>
+                        <td>Display all validation errors per field (<code>all</code>) or just first
+                            (<code>firstError</code>).</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>🚀 Why <code>useForm</code> is So Powerful</h3>
+            <ul>
+                <li><strong>Declarative:</strong> No need to manage input state manually.</li>
+                <li><strong>Performant:</strong> Reduces unnecessary re-renders.</li>
+                <li><strong>Flexible:</strong> Works with both controlled and uncontrolled components.</li>
+                <li><strong>Extensible:</strong> Supports complex schemas, arrays, and dynamic fields.</li>
+            </ul>
+        </div>
+    </div>
+</body>
+
+</html>

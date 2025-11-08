@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buya's Blog - Deep Dive into React Native Keychain</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"
+        integrity="sha256-46qynGAkLSFpVbEBog43gvNhfrOj+BmwXdxFgVK/Kvc=" crossorigin="anonymous" />
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,700|Roboto+Slab:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../blogs.css">
+</head>
+
+<body>
+    <ul class="sticky" id="mainMenu">
+        <li class="mainMenuList"><a href="../../index.html">Home</a></li>
+        <li class="mainMenuList"><a href="../../index.html#project">Project</a></li>
+        <li class="mainMenuList"><a href="../../index.html#class">Online class</a></li>
+        <li class="mainMenuList"><a href="../../index.html#competition">Competition</a></li>
+        <li class="mainMenuList"><a href="../../index.html#about">About me</a></li>
+        <li class="mainMenuList"><a href="../blogs.html">Blog</a></li>
+    </ul>
+
+    <div class="container">
+        <div class="blog_section blog-post">
+            <div class="blog-post-header">
+                <img src="../../img/myAvatar1.png" alt="Author avatar" class="blog-avatar">
+                <div>
+                    <h1 class="blog-title">🔐 Deep Dive into React Native Keychain: Managing Secure Credentials and
+                        Biometric Login</h1>
+                    <div class="blog-meta">By Buya &bull; <span>October 2025</span></div>
+                </div>
+            </div>
+
+            <p><strong>React Native developers</strong> often face challenges when handling secure user credentials and
+                biometric authentication.
+                The <code>react-native-keychain</code> library is one of the most popular solutions for this, allowing
+                apps to securely store usernames,
+                passwords, tokens, and even credentials protected by biometrics.</p>
+
+            <h3>🌿 What is <code>react-native-keychain</code>?</h3>
+            <p><code>react-native-keychain</code> is a wrapper around iOS Keychain and Android Keystore APIs. It enables
+                secure storage of sensitive data
+                such as login credentials and offers built-in support for biometric authentication like Touch ID or Face
+                ID.</p>
+
+            <ul>
+                <li>Securely store sensitive credentials</li>
+                <li>Protect access with biometrics or device passcode</li>
+                <li>Automatically handle encryption and access control</li>
+                <li>Retrieve or reset credentials easily</li>
+            </ul>
+
+            <h3>⚙️ Typical Operations</h3>
+            <ul>
+                <li><strong>Set credentials</strong> — securely save username/password</li>
+                <li><strong>Get credentials</strong> — retrieve stored credentials when needed</li>
+                <li><strong>Reset credentials</strong> — clear credentials, e.g., on logout</li>
+                <li><strong>Check biometry type</strong> — detect if Face ID, Touch ID, etc., are available</li>
+            </ul>
+
+            <h3>🧩 Using Keychain in React Native</h3>
+            <p>Here’s a practical hook implementation that covers basic Keychain operations and biometric login:</p>
+
+            <pre><code>export const useKeychain = () =&gt; {
+  const { t } = useTranslation()
+  const dispatch = useDispatch()
+  const [biometryType, setBiometryType] = useState&lt;Keychain.BIOMETRY_TYPE | null&gt;(null)
+
+  const options: Keychain.Options = useMemo(
+    () =&gt; ({
+      service: getBundleId(),
+      accessControl: Keychain.ACCESS_CONTROL.BIOMETRY_CURRENT_SET_OR_DEVICE_PASSCODE,
+      accessible: Keychain.ACCESSIBLE.ALWAYS,
+      authenticationPrompt: { title: t('auth.biometric.read') },
+    }),
+    [t],
+  )
+
+  const getBiometryType = useCallback(() =&gt; Keychain.getSupportedBiometryType().then(setBiometryType), [])
+  const getCredentials = useCallback(() =&gt; Keychain.getGenericPassword(options), [options])
+  const setCredentials = useCallback(
+    ({ username, password }: Credentials) =&gt; Keychain.setGenericPassword(username, password, options),
+    [options],
+  )
+  const resetCredentials = useCallback(() =&gt; {
+    dispatch(setIsBiometricLoginEnabled(undefined))
+    Keychain.resetGenericPassword(options).catch(() =&gt; Alert.alert(t('general.errorOccurred')))
+  }, [t, options, dispatch])
+
+  useEffect(() =&gt; { getBiometryType() }, [getBiometryType])
+
+  return { biometryType, setCredentials, getCredentials, resetCredentials }
+}
+</code></pre>
+
+            <h3>🧠 How This Works</h3>
+            <ul>
+                <li><code>setCredentials</code>: Stores username and password securely.</li>
+                <li><code>getCredentials</code>: Fetches credentials, prompting biometric authentication if configured.
+                </li>
+                <li><code>resetCredentials</code>: Clears stored credentials and biometric login state.</li>
+                <li><code>getBiometryType</code>: Detects the available biometric method (Face ID, Touch ID, etc.).</li>
+            </ul>
+
+            <h3>🔧 Key Option Parameters</h3>
+            <ul>
+                <li><strong>service:</strong> Defines the Keychain service (typically your app’s bundle ID).</li>
+                <li><strong>accessControl:</strong> Enforces biometric or device passcode authentication.</li>
+                <li><strong>accessible:</strong> Defines when the keychain entry is accessible (<code>ALWAYS</code>,
+                    <code>WHEN_UNLOCKED</code>, etc.).
+                </li>
+                <li><strong>authenticationPrompt:</strong> Customizes the biometric authentication prompt.</li>
+            </ul>
+
+            <h3>🚨 iOS 26 Issue: Biometric Login Fails</h3>
+            <p>During testing on <strong>iOS 26</strong>, a critical issue was discovered:</p>
+
+            <ul>
+                <li><strong>Symptom:</strong> <code>Keychain.getGenericPassword()</code> returns an object where
+                    <code>username = null</code> and <code>password = UUID string</code>.
+                </li>
+                <li><strong>Effect:</strong> Biometric login fails because the username is missing, breaking validation
+                    logic.</li>
+            </ul>
+
+            <p>This behavior likely results from stricter Keychain context handling in iOS 26, especially when certain
+                <code>accessControl</code> and <code>accessible</code> combinations are used.
+            </p>
+
+            <h3>🧩 Why It Happens</h3>
+            <ul>
+                <li>iOS 26 ties Keychain entries more strictly to access control contexts.</li>
+                <li>If using <code>BIOMETRY_CURRENT_SET_OR_DEVICE_PASSCODE</code> with <code>ALWAYS</code>, iOS may
+                    return partial values.</li>
+                <li>Earlier iOS versions returned both username and password reliably — this is a regression in iOS 26.
+                </li>
+            </ul>
+
+            <h3>🧰 Workarounds</h3>
+            <ol>
+                <li><strong>Store both username and password together</strong> — encode them as a single JSON string.
+                </li>
+                <li><strong>Use a different access control:</strong> try
+                    <code>Keychain.ACCESS_CONTROL.BIOMETRY_ANY_OR_DEVICE_PASSCODE</code> to avoid inconsistencies.
+                </li>
+                <li><strong>Add fallback logic:</strong> if username is null but password exists, handle it gracefully
+                    (e.g., request password re-entry).</li>
+                <li><strong>Monitor Apple updates:</strong> iOS 26+ may receive fixes for this in later patches.</li>
+            </ol>
+
+            <h3>💡 Key Takeaways</h3>
+            <ul>
+                <li><code>react-native-keychain</code> is powerful but sensitive to iOS version changes.</li>
+                <li>Always test biometric flows after major iOS updates.</li>
+                <li>On iOS 26, <code>getGenericPassword()</code> may return <code>null</code> for username.</li>
+                <li>Store critical data together or use fallback logic for robustness.</li>
+            </ul>
+
+        </div>
+    </div>
+</body>
+
+</html>
